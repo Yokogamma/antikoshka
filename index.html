@@ -74,120 +74,83 @@
       <!-- заглавие сайта-->
       <h1 class="komax-header">Купить Антикошку в Киеве</h1>
 
-      <div class="calculator__block">
+      <div>
         <!-- сетка сбоку калькулятора -->
         <div id="moskitos_img">
           <img src="https://moskitos.com.ua/img/moskitos_moskitnaya_setka.jpg" alt="Антикішка Москітос" />
         </div>
 
         <!-- калькулятор - форма -->
-        <div>
-          <div class="komax-form-calc" id="dialogv52bf36ca52ec3">
-            <div class="fieldset">
-              <!-- Шапка формы -->
-              <legend id="dialogv52bf36ca52ec3_legend" style="line-height: 32px">
-                Розрахунок вартості сітки на
-                <a href="#okna" style="font-size: 24px; color: #939190" id="okna_link" onclick="calculateOkna();">вікна</a> /
-                <a href="#dveri" id="dveri_link" style="font-size: 17px; color: #00b3c2" onclick="calculateDveri();">двері</a>
-                <span class="licmark"></span>
-              </legend>
-              <p>розміри сітки вказуйте до мм, без скорочень</p>
 
-              <!-- Ширина -->
-              <div class="control-group" style="margin-top: 20px; margin-bottom: 5px">
-                <label class="control-label" for="dialogv52bf36ca52ec3_input1">
-                  <span title="Ширина рамной москитной сетки в мм, например,если ширина 80 см стоит написать 800"
-                    >Ширина москитной сетки (мм)</span
-                  >:
-                </label>
-                <div class="controls">
-                  <input class="number komax-calc-input" type="tel" value="850" id="x_width" name="input1" />
-                </div>
-              </div>
+        <div id="calc">
+          <!-- Шапка формы -->
+          <legend>
+            Розрахунок вартості сітки на
+            <a href="#okna" onclick="calculateOkna();">вікна</a> /
+            <a href="#dveri" onclick="calculateDveri();">двері</a>
+            <span></span>
+          </legend>
 
-              <!-- Высота -->
-              <div class="control-group" style="margin-bottom: 5px">
-                <label class="control-label" for="dialogv52bf36ca52ec3_input2">
-                  <span title="Высота москитной сетки в мм">Высота москитной сетки (мм)</span>:
-                </label>
-                <div class="controls">
-                  <input class="number komax-calc-input" type="tel" value="1000" id="y_width" name="input2" />
-                </div>
-              </div>
-              <input type="text" value="okna" id="vid_setki" name="vid_setki" style="display: none" />
-              <!-- Тип окна -->
-              <div class="control-group" style="margin-bottom: 5px" id="tip_okna">
-                <label class="control-label">
-                  <span title="Сетка с защитой от домашних животных, сетка из алюминия">Тип окна</span>:
-                </label>
+          <p>розміри сітки вказуйте до мм, без скорочень</p>
 
-                <div class="controls">
-                  <select class="komax-calc-input" id="input_type" name="type_window">
-                    <option value="plastic" selected="selected">Пластиковое</option>
-                    <option value="wood_old">Деревянное (старое)</option>
-                    <option value="wood_new">Деревянное (евроокно)</option>
-                    <option value="aluminum">Алюминиевое</option>
-                  </select>
-                </div>
-              </div>
-
-              <!-- Выбор цвета рамки -->
-              <div class="control-group" id="vyborcveta" style="margin-bottom: 15px">
-                <label class="control-label"> <span title="Выбор цвета рамки">Выбор цвета рамки</span>: </label>
-                <div class="controls">
-                  <select class="komax-calc-input" id="input_color" name="color_mosquito">
-                    <option value="white" selected="selected">Белый</option>
-                    <option value="braun">Коричневый</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div id="dialogv52bf36ca52ec3__line" class="labelctrl" style="margin-top: 0px">
-              <div class="form-actions">
-                <span id="menhe" style="margin-top: 5px; width: 300px; display: inline-block; color: #fa7014"></span>
-                <a id="dialogv52bf36ca52ec3_calculate" href="#posczitat" class="btn btn-calc pull-right" onclick="antiKoshka(1)">
-                  <i id="dialogv52bf36ca52ec3_timerplace" class="fa fa-spinner fa-spin"></i>
-                  <span id="dialogv52bf36ca52ec3_button_text">Посчитать</span>
-                </a>
-              </div>
-            </div>
-            <div class="fieldset" id="dialogv52bf36ca52ec3_outputs0" style="height: 0; overflow: hidden">
-              <div class="control-group" style="margin-bottom: 0; margin-top: 10px">
-                <div class="control">
-                  <p>
-                    Площадь москитной сетки (м2)<span>: </span>
-                    <span id="out_2" style="float: right; font-weight: bold"></span>
-                  </p>
-                </div>
-              </div>
-
-              <div class="control-group">
-                <div class="control">
-                  <p>
-                    Стоимость москитной сетки (грн)<span>:</span
-                    ><span id="out_1" style="float: right; font-weight: bold; color: rgb(250, 112, 20); font-size: 18px"></span>
-                  </p>
-                </div>
-              </div>
-
-              <a
-                id="add_basket"
-                class="btn btn-large btn-success"
-                style="margin: 20px auto"
-                href="#vsia_korzina"
-                onclick="addBasketKoshka();"
-                >добавить в корзину</a
-              >
-            </div>
+          <!-- Ширина -->
+          <div class="fieldset">
+            <label title="Ширина рамной москитной сетки в мм, например,если ширина 80 см стоит написать 800"
+              >Ширина москитной сетки (мм)</label
+            >
+            <input type="tel" value="850" />
           </div>
-          <div id="skidka_30" style="height: 100px; overflow: hidden">
-            <!--<img src="http://moskitos.test/img/skidka_na_setku_m.jpg" width="80" height="77" class="top_img_article" style="float:left; margin-left:30px;"> -->
 
-            <p style="font-size: 20px; font-weight: bold; padding-top: 28px; float: right; color: #fa7014">
-              <strong style="font-size: 36px">-16%</strong> <span style="margin-right: 5px"> скидка на сетки </span> до 27 июня
-            </p>
+          <!-- Высота -->
+          <div class="fieldset">
+            <label title="Высота москитной сетки в мм">Высота москитной сетки (мм)</label>
+
+            <input type="tel" value="1000" />
+          </div>
+
+          <!-- Тип окна -->
+          <div class="fieldset">
+            <label title="Сетка с защитой от домашних животных, сетка из алюминия">Тип окна</label>
+
+            <select>
+              <option value="plastic" selected="selected">Пластиковое</option>
+              <option value="wood_old">Деревянное (старое)</option>
+              <option value="wood_new">Деревянное (евроокно)</option>
+              <option value="aluminum">Алюминиевое</option>
+            </select>
+          </div>
+
+          <!-- Выбор цвета рамки -->
+          <div class="fieldset">
+            <label title="Выбор цвета рамки">Выбор цвета рамки</label>
+
+            <select class="fieldset_select">
+              <option value="white" selected="selected">Белый</option>
+              <option value="braun">Коричневый</option>
+            </select>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn btn-warning calc-button" onclick="antiKoshka(1)">Посчитать</button>
           </div>
         </div>
+      </div>
+
+      <div>
+        <div>
+          <p>Площадь москитной сетки (м2)<span>:</span><span>0.85</span></p>
+        </div>
+        <div>
+          <p>Стоимость москитной сетки (грн)<span>:</span><span>1700</span></p>
+        </div>
+
+        <a href="#vsia_korzina" onclick="addBasketKoshka()">добавить в корзину</a>
+      </div>
+
+      <div>
+        <p style="font-size: 20px; font-weight: bold; padding-top: 28px; float: right; color: #fa7014">
+          <strong style="font-size: 36px">-16%</strong> <span style="margin-right: 5px"> скидка на сетки </span> до 27 июня
+        </p>
       </div>
     </main>
 
