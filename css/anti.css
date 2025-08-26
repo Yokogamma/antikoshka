@@ -468,10 +468,54 @@ ul.komax-profabriku {
   grid-area: button;
 }
 
-/*  */
+/* #endregion */
 
 .komax-dostavka-price {
   font-size: 28px;
   color: #208b19;
   line-height: 32px;
+}
+
+.komax-iframe {
+  max-width: 100%;
+  aspect-ratio: 16 / 10;
+  border: none;
+}
+
+.komax-iframe2 {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border: none;
+}
+
+.komax-article img {
+  max-width: 100%; /* не шире родителя */
+  height: auto; /* сохраняет пропорции */
+  display: block; /* убирает лишние отступы снизу */
+}
+
+.komax-question-block {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.komax-question-content {
+  font-size: 22px;
+  font-weight: bold;
+  color: grey;
+}
+.komax-question-answer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+.komax-question-phone {
+  font-weight: bold;
+  font-size: 40px;
+  color: #00b3c2;
 }
