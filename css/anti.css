@@ -500,12 +500,16 @@ ul.komax-profabriku {
   gap: 20px;
   justify-content: center;
   align-items: center;
+  margin: 0;
+  padding: 0;
 }
 
 .komax-question-content {
   font-size: 22px;
   font-weight: bold;
   color: grey;
+  margin: 0;
+  padding: 0;
 }
 .komax-question-answer {
   display: flex;
@@ -513,9 +517,13 @@ ul.komax-profabriku {
   gap: 10px;
   justify-content: center;
   align-items: center;
+  margin: 0;
+  padding: 0;
 }
 .komax-question-phone {
   font-weight: bold;
   font-size: 40px;
   color: #00b3c2;
+  margin: 0;
+  padding: 0;
 }
