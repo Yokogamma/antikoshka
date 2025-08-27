@@ -1,20 +1,35 @@
+html,
 body {
+  height: 100%;
+  margin: 0;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin: 0;
   font-size: 16px;
 }
 
-p {
-  line-height: 1.5;
-  margin: 0;
-  padding: 0;
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+  padding: 16px;
+}
+
+footer {
+  background: #00b3c2;
+  color: #fff;
+  padding: 30px;
+  text-align: center;
 }
 
 .margin-outside {
   margin-bottom: 24px;
 }
 
-.content-center{
+.content-center {
   text-align: center;
 }
 
@@ -95,19 +110,14 @@ h1.komax-header {
   text-align: center;
 }
 
-.article_head {
-  color: #00b3c2;
-  font-size: 22px;
-  margin: 0 0 20px 0;
-  padding: 0;
-}
-
-main {
-  padding: 16px;
-}
-
 .komax-kak-zakazat-content img {
   display: none;
+}
+
+p {
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
 }
 
 .komax-article p {
@@ -496,8 +506,7 @@ ul.komax-profabriku {
 .komax-ceny-carts {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  margin: 0;
+  gap: 30px;
   padding: 0;
   font-size: 16px;
 }
@@ -511,6 +520,7 @@ ul.komax-profabriku {
     ". button .";
   padding: 0;
   margin: 0;
+  grid-row-gap: 10px;
 }
 .komax-ceny-item img {
   grid-area: image;
@@ -533,9 +543,15 @@ ul.komax-profabriku {
 /* #endregion */
 
 .komax-dostavka-price {
-  font-size: 28px;
+  font-size: 26px;
   color: #208b19;
   line-height: 32px;
+}
+
+.komax-dostavka-text {
+  font-size: 22px;
+  font-weight: bold;
+  color: rgb(112, 112, 112);
 }
 
 .komax-iframe {
@@ -554,20 +570,20 @@ ul.komax-profabriku {
   max-width: 100%; /* не шире родителя */
   height: auto; /* сохраняет пропорции */
   display: block; /* убирает лишние отступы снизу */
+  margin: 1em 0;
 }
 
 .komax-question-block {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 8px;
   justify-content: center;
   align-items: center;
-  margin: 0;
   padding: 0;
 }
 
 .komax-question-content {
-  font-size: 22px;
+  font-size: 19px;
   font-weight: bold;
   color: grey;
   margin: 0;
@@ -576,7 +592,7 @@ ul.komax-profabriku {
 .komax-question-answer {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  /* gap: 10px; */
   justify-content: center;
   align-items: center;
   margin: 0;
@@ -584,8 +600,22 @@ ul.komax-profabriku {
 }
 .komax-question-phone {
   font-weight: bold;
-  font-size: 40px;
+  font-size: 31px;
   color: #00b3c2;
   margin: 0;
   padding: 0;
+}
+
+#super_table p {
+  padding: 4px;
+}
+
+.footer {
+  background-color: #00b3c2;
+  min-height: 30px;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
 }
