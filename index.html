@@ -86,13 +86,14 @@
           <div id="calc">
             <!-- Шапка формы -->
             <legend>
-              Розрахунок вартості сітки на
-              <a href="#okna" onclick="calculateOkna();">вікна</a> /
-              <a href="#dveri" onclick="calculateDveri();">двері</a>
-              <span></span>
+              <h3 class="calc-head">Калькулятор стоимости сетки на</h3>
+              <p class="calc-subhead">
+                <a class="calc-active-link" href="#okna" onclick="calculateOkna();">окна</a> /
+                <a class="calc-passive-link" href="#dveri" onclick="calculateDveri();">двери</a>
+              </p>
             </legend>
 
-            <p>розміри сітки вказуйте до мм, без скорочень</p>
+            <p style="font-style: italic; font-size: 14px">размеры указывайте в мм, без сокращений</p>
 
             <!-- Ширина -->
             <div class="fieldset">
@@ -137,7 +138,7 @@
           </div>
         </div>
 
-        <div>
+        <div style="display: none">
           <div>
             <p>Площадь москитной сетки (м2)<span>:</span><span>0.85</span></p>
           </div>
@@ -148,11 +149,11 @@
           <a href="#vsia_korzina" onclick="addBasketKoshka()">добавить в корзину</a>
         </div>
 
-        <div>
-          <p><strong style="font-size: 36px">-16%</strong> <span style="margin-right: 5px"> скидка на сетки </span> до 27 июня</p>
+        <div class="sale margin-outside">
+          <p>-16%<span>скидка на сетки до 27 июня</p>
         </div>
 
-        <div class="perevagy_block">
+        <div class="perevagy_block margin-outside">
           <h3 class="perevagy_carts_header">
             <span class="perevagy_carts_header_accent">Антикошка:</span> комплектация каждой сетки выдерживает питомца до 17 кг
           </h3>
@@ -548,7 +549,7 @@
           </div>
         </div>
         <div>
-          <p>
+          <p class="page-update">
             последнее обновление страницы: <time datetime="2025-04-15T19:26" title="15.04.2025 в 19:26" pubdate="">15.04.2025 в 19:26</time>
           </p>
         </div>

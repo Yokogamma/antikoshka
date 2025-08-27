@@ -126,6 +126,25 @@ p {
   font-size: 16px;
 }
 
+.sale {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+
+.sale p {
+  font-size: 34px;
+  font-weight: bold;
+  color: #333;
+}
+.sale span {
+  font-weight: bold;
+  font-size: 18px;
+  color: #ec971f;
+  margin-left: 6px;
+}
+
 /* #region logo block */
 .logo-block {
   background-color: #00b3c2;
@@ -262,6 +281,32 @@ a.products-active {
 /* #endregion */
 
 /* #region calc */
+
+.calc-head {
+  text-align: center;
+}
+
+.calc-subhead {
+  text-align: center;
+}
+
+.calc-active-link {
+  color: #939190;
+  font-size: 21px;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.calc-active-link:hover,
+.calc-passive-link:hover {
+  text-decoration: underline;
+}
+
+.calc-passive-link {
+  font-size: 17px;
+  color: #00b3c2;
+  text-decoration: none;
+}
 
 #moskitos_img img {
   width: 100%;
@@ -411,7 +456,7 @@ fieldset[disabled] .btn-warning.active {
 
 .perevagy_carts_header {
   font-size: 18px;
-  margin: 0 0 10px 0;
+  margin: 30px 0 12px 0;
   color: black;
 }
 
@@ -610,12 +655,24 @@ ul.komax-profabriku {
   padding: 4px;
 }
 
-.footer {
-  background-color: #00b3c2;
-  min-height: 30px;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  position: absolute;
-  bottom: 0;
+.page-update {
+  font-size: 14px;
+  font-style: italic;
+  color: #ccc;
+}
+
+.komax-gallery {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.komax-gallery > img {
+  align-self: flex-start;
+}
+.komax-gallery img {
+  margin: 10px;
 }
