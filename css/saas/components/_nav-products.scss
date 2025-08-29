@@ -13,6 +13,14 @@
   align-items: center;
   list-style: none;
   padding: 0;
+
+  @media (min-width: 720px) {
+    display: flex;
+    justify-content: space-between;
+    width: 720px;
+    padding: 0;
+    margin: auto;
+  }
 }
 
 .products-menu a {
