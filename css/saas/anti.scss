@@ -13,6 +13,20 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+
+  @media (min-width: 1000px) {
+    display: grid;
+    grid-template-columns: 1fr 1000px 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "header header header"
+      ". middle ."
+      "footer footer footer";
+  }
+}
+
+.komax-grid-footer {
+  grid-area: footer;
 }
 
 main {
@@ -22,6 +36,11 @@ main {
     width: 720px;
     margin: 0 auto;
   }
+
+  @media (min-width: 1000px) {
+    grid-area: middle;
+    min-height: 100%;
+  }
 }
 
 footer {
@@ -29,6 +48,10 @@ footer {
   color: #fff;
   padding: 30px;
   text-align: center;
+
+  @media (min-width: 1000px) {
+    display: none;
+  }
 }
 
 .margin-outside {
@@ -210,6 +233,13 @@ p {
 }
 
 /* #region logo block */
+
+header {
+  @media (min-width: 1000px) {
+    display: none;
+  }
+}
+
 .logo-block {
   background-color: #00b3c2;
 }
@@ -812,3 +842,23 @@ ul.komax-profabriku {
   margin: 10px;
 }
 // #endregion
+
+.logo__block {
+  display: none;
+  background-color: #00b3c2;
+
+  @media (min-width: 1000px) {
+    display: block;
+  }
+}
+.komax-grid-header {
+  grid-area: header;
+  order: 1;
+}
+
+.logo__block_image {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0;
+  height: 58px;
+}
