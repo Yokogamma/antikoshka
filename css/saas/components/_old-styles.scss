@@ -1,0 +1,19 @@
+.logo__block {
+  display: none;
+  background-color: #00b3c2;
+
+  @media (min-width: 1000px) {
+    display: block;
+  }
+}
+.komax-grid-header {
+  grid-area: header;
+  order: 1;
+}
+
+.logo__block_image {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0;
+  height: 58px;
+}
