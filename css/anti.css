@@ -105,19 +105,28 @@ h1.komax-header {
   text-align: center;
 }
 
-.logo__block {
+.komax-grid-header {
   display: none;
-  background-color: #00b3c2;
 }
 @media (min-width: 1000px) {
-  .logo__block {
-    display: block;
+  .komax-grid-header {
+    display: flex;
+    order: 1;
   }
 }
 
-.komax-grid-header {
-  grid-area: header;
-  order: 1;
+.komax-grid-footer {
+  display: none;
+}
+@media (min-width: 1000px) {
+  .komax-grid-footer {
+    display: flex;
+    order: 3;
+  }
+}
+
+.logo__block {
+  background-color: #00b3c2;
 }
 
 .logo__block_image {
@@ -127,12 +136,78 @@ h1.komax-header {
   height: 58px;
 }
 
+@media (min-width: 1000px) {
+  .main-content {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 20px;
+    justify-content: center;
+    align-content: flex-start;
+    width: 1000px;
+    margin: 0 auto;
+    order: 2;
+  }
+}
+
+#komax_nav {
+  display: none;
+}
+@media (min-width: 1000px) {
+  #komax_nav {
+    display: block;
+    width: 232px;
+    margin: 60px 0 0 0;
+    padding: 0;
+  }
+}
+
+.mosk_nav_header {
+  background-image: url(https://moskitos.com.ua/img/strelka_right.png);
+  background-size: 165px 41px;
+  width: 165px;
+  height: 41px;
+}
+.mosk_nav_header p {
+  font-weight: bold;
+  color: white;
+  padding: 0 12px;
+  font-size: 18px;
+  line-height: 41px;
+}
+
+.mosk_nav_items {
+  margin: 10px 0 40px 5px;
+  padding: 4px 8px 4px 8px;
+}
+.mosk_nav_items li {
+  color: grey;
+  font-size: 12pt;
+  font-weight: bold;
+  margin-bottom: 10px;
+  list-style: none;
+  line-height: 20px;
+}
+.mosk_nav_items a {
+  color: #939190;
+  text-decoration: none;
+}
+
+.mosk-adress {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 85px;
+}
+.mosk-adress p a {
+  color: #939190;
+  text-decoration: none;
+}
+
 html,
 body {
   height: 100%;
   margin: 0;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  margin: 0;
   font-size: 16px;
 }
 
@@ -140,18 +215,6 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-}
-@media (min-width: 1000px) {
-  .wrapper {
-    display: grid;
-    grid-template-columns: 1fr 1000px 1fr;
-    grid-template-rows: auto 1fr auto;
-    grid-template-areas: "header header header" ". middle ." "footer footer footer";
-  }
-}
-
-.komax-grid-footer {
-  grid-area: footer;
 }
 
 main {
@@ -162,12 +225,6 @@ main {
   main {
     width: 720px;
     margin: 0 auto;
-  }
-}
-@media (min-width: 1000px) {
-  main {
-    grid-area: middle;
-    min-height: 100%;
   }
 }
 
