@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "module": "system",
+    "outFile": "./js/script.js",
+    "target": "es5"
+  },
+  "include": ["./ts/**/*.ts"]
+}
