@@ -1,0 +1,16 @@
+%button-wrap {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px;
+}
+
+.calc-actions{
+  @extend %button-wrap;
+
+  background-color: #f5f5f5;
+  border-top: 1px solid #e5e5e5;
+}
+
+.add-basket-actions{
+  @extend %button-wrap;
+}

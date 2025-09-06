@@ -105,6 +105,17 @@ h1.komax-header {
   text-align: center;
 }
 
+.add-basket-actions, .calc-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px;
+}
+
+.calc-actions {
+  background-color: #f5f5f5;
+  border-top: 1px solid #e5e5e5;
+}
+
 .komax-grid-header {
   display: none;
 }
@@ -201,6 +212,140 @@ h1.komax-header {
 .mosk-adress p a {
   color: #939190;
   text-decoration: none;
+}
+
+.calc-results-block {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.calc-results-text {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.calc-results-text p {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.calc-results-text span {
+  font-size: 14px;
+}
+.calc-results-text span.results-sq {
+  font-weight: 700;
+}
+.calc-results-text span.results-price {
+  font-weight: 700;
+  font-size: 18px;
+  color: rgb(250, 112, 20);
+}
+
+.basket-block {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 20px;
+}
+
+.basket {
+  background-color: rgb(253, 230, 138);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.order-summary {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+}
+@media (min-width: 720px) {
+  .order-summary {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+}
+.order-summary p {
+  font-weight: bold;
+  font-size: 18px;
+}
+.order-summary div {
+  display: flex;
+  gap: 10px;
+}
+
+.order-summary .label {
+  color: #5bb75b;
+}
+
+.order-summary .quantity {
+  color: #fa7014;
+}
+
+.order-summary .price {
+  font-size: 20px;
+  color: #fa7014;
+  font-family: 700;
+}
+
+.order-summary .order-btn {
+  margin: 10px 0 10px 32px;
+}
+
+.order-summary .clear-btn {
+  margin: 0 0 0 17px;
+}
+
+.send-zakaz {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 30px;
+}
+
+.client-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 16px;
+}
+@media (min-width: 720px) {
+  .client-info {
+    width: 430px;
+  }
+  .client-info input {
+    width: 240px;
+  }
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.radio-group div,
+.radio-group label,
+.radio-group input {
+  margin: 0;
+  padding: 0;
+  height: auto;
+  width: auto;
+}
+.radio-group div {
+  display: flex;
+  flex-direction: row;
+  align-content: flex-start;
+  gap: 10px;
+}
+.radio-group h3 {
+  margin: 0;
 }
 
 html,

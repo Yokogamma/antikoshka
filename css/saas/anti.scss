@@ -1,6 +1,9 @@
 @use "components/nav-products";
 @use "components/headers";
+@use "components/buttons";
 @use "components/old-styles";
+@use "components/calc/calc-results";
+@use "components/calc/basket";
 
 html,
 body {
