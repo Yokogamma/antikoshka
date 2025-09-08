@@ -1,0 +1,772 @@
+@use "saas/components/nav-products";
+@use "saas/components/headers";
+@use "saas/components/buttons";
+@use "saas/components/old-styles";
+@use "saas/components/calc/calc-results";
+@use "saas/components/calc/basket";
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  // @media (min-width: 1000px) {
+  //   display: grid;
+  //   grid-template-columns: 1fr 1000px 1fr;
+  //   grid-template-rows: auto 1fr auto;
+  //   grid-template-areas:
+  //     "header header header"
+  //     ". middle ."
+  //     "footer footer footer";
+  // }
+}
+
+main {
+  flex: 1;
+  padding: 16px;
+
+  @media (min-width: 720px) {
+    width: 720px;
+    margin: 0 auto;
+  }
+}
+
+footer {
+  background: #00b3c2;
+  color: #fff;
+  padding: 30px;
+  text-align: center;
+
+  @media (min-width: 1000px) {
+    display: none;
+  }
+}
+
+.margin-outside {
+  margin-bottom: 28px;
+}
+
+.content-center {
+  text-align: center;
+}
+
+.change-language {
+  position: absolute;
+  top: 5px;
+  right: 70px;
+  color: white;
+  font-size: 18px;
+  text-decoration: none;
+}
+
+#article-logo {
+  display: none;
+}
+
+p {
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+}
+
+.komax-article p {
+  margin-bottom: 1em;
+  line-height: 1.5;
+  font-size: 16px;
+}
+
+.sale {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px;
+  background-color: #f5f5f5;
+  @media (min-width: 720px) {
+    width: 390px;
+    margin: 0 0 0 auto;
+    background-color: white;
+  }
+}
+
+.sale p {
+  font-size: 34px;
+  font-weight: bold;
+  color: #333;
+}
+.sale span {
+  font-weight: bold;
+  font-size: 18px;
+  color: #ec971f;
+  margin-left: 6px;
+}
+
+.komax-iframe {
+  max-width: 100%;
+  aspect-ratio: 16 / 10;
+  border: none;
+}
+
+.komax-iframe2 {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border: none;
+}
+
+.komax-article img {
+  max-width: 100%; /* не шире родителя */
+  height: auto; /* сохраняет пропорции */
+  display: block; /* убирает лишние отступы снизу */
+  margin: 1em 0;
+}
+
+#super_table p {
+  padding: 4px;
+}
+
+.page-update {
+  font-size: 14px;
+  font-style: italic;
+  color: #ccc;
+  text-align: end;
+}
+
+.komax-kak-sdelat-zakaz {
+  img {
+    display: none !important;
+  }
+
+  @media (min-width: 720px) {
+    display: grid;
+    grid-template-columns: 120px 1fr; /* две равные колонки */
+
+    h2 {
+      grid-column: 1 / 3;
+    }
+    img {
+      display: block !important;
+      grid-column: 1 / 2;
+      padding-right: 20px;
+    }
+    div {
+      grid-column: 2 / 3;
+    }
+  }
+}
+
+/* #region logo block */
+
+header {
+  @media (min-width: 1000px) {
+    display: none;
+  }
+}
+
+.logo-block {
+  background-color: #00b3c2;
+}
+
+.logo-container {
+  padding: 20px 15px 10px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo-link {
+  display: flex;
+  align-content: center;
+  text-decoration: none;
+  gap: 10px;
+}
+
+.logo-text {
+  color: #fefefe;
+  font-size: 1.625rem;
+  font-weight: 600;
+  line-height: 35px;
+  padding-top: 3px;
+}
+
+.logo-image {
+  height: 35px;
+}
+/* #endregion */
+
+/* #region dropdown menu */
+#brandmenu {
+  width: 30px;
+  height: 30px;
+  padding-top: 4px;
+}
+
+.brandmenu-dropdown {
+  padding: 0 0 10px 10px;
+  margin: 0 0 0 0;
+  list-style: none;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.5s ease;
+}
+.brandmenu-dropdown li {
+  padding: 4px 4px 4px 0;
+}
+.brandmenu-dropdown a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 17px;
+  padding: 3px;
+}
+
+.brandmenu-dropdown.show {
+  max-height: 500px; /* достаточно для содержимого */
+  opacity: 1;
+}
+/* #endregion */
+
+/* #region language panel */
+
+.language__panel {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 5px;
+  margin-bottom: 20px;
+}
+
+.language__panel a {
+  text-decoration: none;
+}
+
+.language__panel_contacts {
+  color: #faa732;
+  font-weight: bold;
+}
+
+.language__panel_box {
+  display: flex;
+  justify-content: right;
+  gap: 10px;
+}
+.language__panel_phone {
+  font-weight: bold;
+  color: #faa732;
+}
+
+.language__panel_ru {
+  color: grey;
+}
+
+.language__panel_ua {
+  color: #faa732;
+  font-weight: bold;
+  pointer-events: none;
+}
+
+/* #endregion */
+
+/* #region calc */
+
+.calc-block {
+  display: flex;
+  flex-direction: column;
+  @media (min-width: 720px) {
+    width: 100%;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: start;
+  }
+}
+
+.calc-head {
+  text-align: center;
+}
+
+.calc-subhead {
+  text-align: center;
+}
+
+.calc-active-link {
+  color: #939190;
+  font-size: 21px;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.calc-active-link:hover,
+.calc-passive-link:hover {
+  text-decoration: underline;
+}
+
+.calc-passive-link {
+  font-size: 17px;
+  color: #00b3c2;
+  text-decoration: none;
+}
+
+#moskitos_img {
+  img {
+    width: 100%;
+    @media (min-width: 720px) {
+      width: 270px;
+    }
+  }
+}
+
+#calc {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-size: 16px;
+
+  @media (min-width: 720px) {
+    width: 100%;
+  }
+}
+
+.fieldset {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 6px;
+  @media (min-width: 720px) {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
+  }
+
+  label {
+    line-height: 40px;
+    font-size: 16px;
+  }
+}
+
+input,
+select {
+  height: 40px; /* задаём одинаковую высоту */
+  padding: 0 12px; /* одинаковые внутренние отступы */
+  border: 1px solid #ccc; /* одинаковая рамка */
+  border-radius: 4px; /* одинаковое скругление */
+  font-size: 14px; /* одинаковый размер шрифта */
+  line-height: 1.2; /* контролируем высоту строки */
+  box-sizing: border-box; /* учитываем рамку и паддинги */
+  @media (min-width: 720px) {
+    width: 130px;
+  }
+}
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: url("data:image/svg+xml;utf8,\<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='black' viewBox='0 0 24 24'>\<path d='M7 10l5 5 5-5z'/>\</svg>")
+    no-repeat right 12px center;
+  background-size: 16px;
+  background-color: white; /* чтобы фон не пропадал */
+  cursor: pointer;
+}
+
+.calc-button {
+  width: 50%;
+  align-self: center;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px;
+
+  background-color: #f5f5f5;
+  border-top: 1px solid #e5e5e5;
+}
+
+/* #endregion */
+
+/* #region buttons */
+.btn {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+/* стилизация кнопки warning */
+.btn-warning {
+  color: #fff;
+  background-color: #f0ad4e;
+  border-color: #eea236;
+}
+
+.btn-warning:hover,
+.btn-warning:focus,
+.btn-warning:active,
+.btn-warning.active,
+.open > .dropdown-toggle.btn-warning {
+  color: #fff;
+  background-color: #ec971f;
+  border-color: #d58512;
+}
+
+.btn-warning:active,
+.btn-warning.active,
+.open > .dropdown-toggle.btn-warning {
+  background-image: none;
+}
+
+.btn-warning.disabled,
+.btn-warning[disabled],
+fieldset[disabled] .btn-warning,
+.btn-warning.disabled:hover,
+.btn-warning[disabled]:hover,
+fieldset[disabled] .btn-warning:hover,
+.btn-warning.disabled:focus,
+.btn-warning[disabled]:focus,
+fieldset[disabled] .btn-warning:focus,
+.btn-warning.disabled:active,
+.btn-warning[disabled]:active,
+fieldset[disabled] .btn-warning:active,
+.btn-warning.disabled.active,
+.btn-warning[disabled].active,
+fieldset[disabled] .btn-warning.active {
+  background-color: #f0ad4e;
+  border-color: #eea236;
+}
+
+.btn-warning .badge {
+  color: #f0ad4e;
+  background-color: #fff;
+}
+
+/* #endregion */
+
+/* #region perevagy block */
+.perevagy_block {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+}
+
+.perevagy_block_carts {
+  width: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+
+  @media (min-width: 720px) {
+    flex-wrap: nowrap;
+  }
+}
+
+.perevagy_carts_header {
+  font-size: 18px;
+  margin: 30px 0 12px 0;
+  color: black;
+}
+
+.perevagy_carts_header_accent {
+  color: rgb(250, 112, 20);
+}
+
+.perevagy_carts_item {
+  display: flex;
+  flex-shrink: 1;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+}
+
+.perevagy_carts_text {
+  line-height: 20px;
+  font-weight: normal;
+  font-family: Arial, sans-serif !important;
+  color: rgb(250, 112, 20);
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.perevagy_carts_item img {
+  max-width: 100%;
+}
+
+/* #endregion */
+
+/* #region phones block */
+.komax-phones {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 15px 10px;
+  border-left: 8px solid #dfdddd;
+  background-color: #fcf19d;
+  gap: 20px;
+  font-size: 16px;
+  line-height: 30px;
+
+  @media (min-width: 720px) {
+    flex-direction: row;
+    gap: 8px;
+    justify-content: space-between;
+    padding: 15px 6px;
+    font-size: 14px;
+  }
+}
+
+.komax-phones div {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+
+  @media (min-width: 720px) {
+    gap: 4px;
+  }
+}
+
+.komax-phones img {
+  width: 30px;
+  height: auto;
+}
+
+.komax-phones a {
+  color: grey;
+  text-decoration: none;
+}
+
+/* #endregion */
+
+/* #region pro fabriku block */
+ul.komax-profabriku {
+  list-style-position: inside; /* чтобы маркеры были внутри */
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* две равные колонки */
+  gap: 10px; /* расстояние между колонками */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.komax-profabriku li {
+  display: flex; /* Ваш Flexbox для выравнивания содержимого li */
+  align-items: center; /* Выравнивание текста по центру вертикально */
+  margin-bottom: 10px; /* Отступ между элементами списка */
+  position: relative; /* Важно для позиционирования ::before */
+  padding-left: 20px; /* Отступ для маркера */
+}
+
+.komax-profabriku li::before {
+  content: ""; /* Обязателен для псевдоэлементов */
+  position: absolute; /* Позиционируем маркер абсолютно */
+  left: 0; /* Прижимаем к левому краю li */
+  top: 50%; /* Центрируем по вертикали относительно li */
+  transform: translateY(-50%); /* Точная подстройка для вертикального центрирования */
+  width: 16px; /* Ширина вашего маркера (например, иконки) */
+  height: 16px; /* Высота вашего маркера */
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAQAAAD8x0bcAAAAgUlEQVR4AWOgD1jOR1hJ1/JHy1XwK+le/h8Iny/Xwq2kHqgAAnNhQgrLFVCUNMCVVMOElJc/BhqrCVfSC1dSCBNSAjoPYTumErCgCtAciODD5YrLm9EtQlj3CCrxEVMJQpns8tswaYRFmMpkkJQV4g4ZieXXEErwKbsKUkI4QmkMAEYugcH1AACSAAAAAElFTkSuQmCC"); /* Путь к вашему изображению маркера */
+  background-size: contain; /* Чтобы изображение поместилось */
+  background-repeat: no-repeat; /* Не повторять изображение */
+}
+/* #endregion */
+
+/* #region ceny block */
+.komax-ceny-carts {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 0;
+  font-size: 16px;
+
+  @media (min-width: 720px) {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 0px;
+  }
+}
+
+.komax-ceny-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "image content content"
+    ". button .";
+  padding: 0;
+  margin: 0;
+  grid-row-gap: 10px;
+
+  @media (min-width: 720px) {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "image"
+      "content"
+      "button";
+  }
+}
+
+.komax-ceny-item-title {
+  font-weight: 600;
+  color: grey;
+}
+
+.komax-ceny-item img {
+  grid-area: image;
+  width: 100%;
+}
+.komax-ceny-item ul {
+  grid-area: content;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  @media (min-width: 720px) {
+    justify-self: end;
+  }
+}
+.komax-ceny-item li {
+  margin-bottom: 10px;
+}
+
+.komax-ceny-item-button {
+  grid-area: button;
+  @media (min-width: 720px) {
+    justify-self: center;
+  }
+}
+
+/* #endregion */
+
+/* #region dostavka block */
+
+.komax-dostavka-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 15px 10px;
+  border-left: 8px solid #dfdddd;
+  background-color: #fcf19d;
+  gap: 20px;
+  font-size: 16px;
+  line-height: 30px;
+}
+
+.komax-dostavka-price {
+  font-size: 26px;
+  color: #208b19;
+  line-height: 32px;
+}
+
+.komax-dostavka-text {
+  font-size: 22px;
+  font-weight: bold;
+  color: rgb(112, 112, 112);
+}
+
+/* #endregion */
+
+// #region question
+.komax-question-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+
+  @media (min-width: 720px) {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    justify-content: center;
+    align-items: center;
+    margin: 30px 0;
+  }
+}
+
+.komax-question-content {
+  font-size: 19px;
+  font-weight: bold;
+  color: grey;
+  margin: 0;
+  padding: 0;
+  @media (min-width: 720px) {
+    font-size: 28px;
+    font-weight: bold;
+    color: grey;
+  }
+}
+.komax-question-answer {
+  display: flex;
+  flex-direction: column;
+  /* gap: 10px; */
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+
+  @media (min-width: 720px) {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+  }
+}
+.komax-question-phone {
+  font-weight: bold;
+  font-size: 31px;
+  color: #00b3c2;
+  margin: 0;
+  padding: 0;
+
+  @media (min-width: 720px) {
+    font-weight: bold;
+    font-size: 31px;
+    color: #00b3c2;
+  }
+}
+// #endregion
+
+// #region komax-gallery
+
+.komax-gallery {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.komax-gallery > img {
+  align-self: flex-start;
+}
+.komax-gallery img {
+  margin: 10px;
+}
+// #endregion

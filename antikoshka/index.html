@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <a class="change-language" href="https://moskitos.com.ua/ua/kontakty">ua</a>
+        <div class="logo-block">
+          <div class="logo-container">
+            <a class="logo-link" href="https://moskitos.com.ua">
+              <img class="logo-image" src="https://moskitos.com.ua/img/komar_moskitos_logo.png" id="logo" alt="Фабрика Москитос - Киев" />
+              <span class="logo-text">Фабрика Москитос!</span>
+            </a>
+
+            <img id="brandmenu" src="https://moskitos.com.ua/img/icon_menu.svg" />
+          </div>
+
+          <ul class="brandmenu-dropdown">
+            <li>
+              <a href="https://moskitos.com.ua#dialogv52bf36ca52ec3_legend">калькулятор сеток</a>
+            </li>
+            <li>
+              <a href="https://moskitos.com.ua/oplata-i-dostavka">оплата и доставка</a>
+            </li>
+            <li>
+              <a href="https://moskitos.com.ua/zamer-i-montag">замер и монтаж</a>
+            </li>
+            <li>
+              <a href="https://moskitos.com.ua/proizvodstvo-moskitnykh-setok#ofabrike">о фабрике</a>
+            </li>
+            <li>
+              <a href="https://moskitos.com.ua/proizvodstvo-moskitnykh-setok">производство</a>
+            </li>
+            <li>
+              <a href="https://moskitos.com.ua#xarakteristiki">характеристики сеток</a>
+            </li>
+            <li>
+              <a href="https://moskitos.com.ua#photo">фотографии сеток</a>
+            </li>
+            <li><a href="https://moskitos.com.ua/kontakty">контакты</a></li>
+          </ul>
+        </div>
+
+        <div class="products-navigation">
+          <ul class="products-menu">
+            <li>
+              <a href="https://moskitos.com.ua">Москитные сетки</a>
+            </li>
+            <li>
+              <a class="products-active" href="https://moskitos.com.ua/okonnye-ruczki">Антикошки</a>
+            </li>
+            <li>
+              <a href="https://moskitos.com.ua/podokonniki">Плиссе</a>
+            </li>
+          </ul>
+        </div>
+      </header>
+
+      <div class="main-content">
+        <main>
+          <!-- шапка с выбором языков-->
+          <div class="language__panel">
+            <p class="language__panel_box">
+              <!-- <a class="language__panel_phone" href="tel:+380500887472">050 088-74-72</a> -->
+              <a class="language__panel_phone" href="tel:+380680151548">068 015-15-48</a>
+              <a class="language__panel_phone" href="tel:+380500887472"><img src="img/icons/viber_logo1.svg" width="20" height="20" /></a>
+              <a class="language__panel_phone" href="tel:+380500887472"><img src="img/icons/telegram_logo.svg" width="20" height="20" /></a>
+            </p>
+          </div>
+
+          <!-- заглавие сайта-->
+          <h1 class="komax-header">Купить Антикошку в Киеве</h1>
+
+          <div class="calc-block">
+            <!-- сетка сбоку калькулятора -->
+            <div id="moskitos_img">
+              <img src="https://moskitos.com.ua/img/moskitos_moskitnaya_setka.jpg" alt="Антикішка Москітос" />
+            </div>
+
+            <!-- калькулятор - форма -->
+
+            <div id="calc">
+              <!-- Шапка формы -->
+              <legend>
+                <h3 class="calc-head">Калькулятор стоимости сетки на</h3>
+                <p class="calc-subhead">
+                  <a class="calc-active-link" href="#okna" onclick="calculateOkna();">окна</a>
+                  /
+                  <a class="calc-passive-link" href="#dveri" onclick="calculateDveri();">двери</a>
+                </p>
+              </legend>
+
+              <p style="font-style: italic; font-size: 14px">размеры указывайте в мм, без сокращений</p>
+
+              <!-- Ширина -->
+              <div class="fieldset">
+                <label title="Ширина рамной москитной сетки в мм, например,если ширина 80 см стоит написать 800">Ширина москитной сетки (мм)</label>
+                <input type="tel" value="850" />
+              </div>
+
+              <!-- Высота -->
+              <div class="fieldset">
+                <label title="Высота москитной сетки в мм">Высота москитной сетки (мм)</label>
+
+                <input type="tel" value="1000" />
+              </div>
+
+              <!-- Тип окна -->
+              <div class="fieldset">
+                <label title="Сетка с защитой от домашних животных, сетка из алюминия">Тип окна</label>
+
+                <select>
+                  <option value="plastic" selected="selected">Пластиковое</option>
+                  <option value="wood_old">Деревянное (старое)</option>
+                  <option value="wood_new">Деревянное (евроокно)</option>
+                  <option value="aluminum">Алюминиевое</option>
+                </select>
+              </div>
+
+              <!-- Выбор цвета рамки -->
+              <div class="fieldset">
+                <label title="Выбор цвета рамки">Выбор цвета рамки</label>
+
+                <select class="fieldset_select">
+                  <option value="white" selected="selected">Белый</option>
+                  <option value="braun">Коричневый</option>
+                </select>
+              </div>
+
+              <div class="calc-actions">
+                <button class="btn btn-warning calc-button" onclick="antiKoshka(1)">Посчитать</button>
+              </div>
+
+              <div id="calc-results-block" class="calc-results-block">
+                <div class="calc-results-text">
+                  <p>
+                    <span>Площадь москитной сетки (м2):</span>
+                    <span class="results-sq">0.85</span>
+                  </p>
+
+                  <p>
+                    <span>Стоимость москитной сетки (грн):</span>
+                    <span class="results-price">1700</span>
+                  </p>
+                </div>
+
+                <div class="add-basket-actions">
+                  <button class="btn btn-warning calc-button" onclick="addBasketKoshka()">добавить в корзину</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- #region basket block -->
+          <div id="basket-block" class="basket-block">
+            <div class="basket">
+              <textarea placeholder="Для того чтобы оформить заказ, добавьте сетки в корзину." disabled="disabled">
+1. Cетка на Пластиковое окно: 850мм x 1000 мм - цвет Белый = 1680 грн.</textarea
+              >
+              <textarea placeholder="Для того чтобы оформить заказ, добавьте сетки в корзину." disabled="disabled">
+1. Cетка на Пластиковое окно: 850мм x 1000 мм - цвет Белый = 1680 грн.</textarea
+              >
+            </div>
+
+            <div class="order-summary">
+              <p>
+                <span>Cтоимость заказа:</span>
+                <span>1</span>
+                <span>шт. -</span>
+                <span>1680</span>
+                <span>грн.</span>
+              </p>
+              <div>
+                <button class="btn">Оформить заказ</button>
+                <button class="btn">Очистить</button>
+              </div>
+            </div>
+
+            <form class="send-zakaz">
+              <div class="client-info">
+                <div class="fieldset">
+                  <label>Имя, Фамилия</label>
+                  <input type="text" />
+                </div>
+                <div class="fieldset">
+                  <label>Ваш телефон</label>
+                  <input type="text" />
+                </div>
+                <div class="fieldset">
+                  <label>Ваш email</label>
+                  <input type="text" />
+                </div>
+              </div>
+
+              <div class="radio-group">
+                <h3>Доставка</h3>
+                <div>
+                  <input type="radio" name="choice" value="option1" checked id="option1" />
+                  <label for="option1">
+                    <span style="color: #247724; font-weight: bold">самовывоз (Киев)</span>
+                    <span>
+                      1) Здолбуновская 7Д, 2) Ак.Крымского 4А, 3) Луговая 16б, 4) Борщаговская 154а, 5) Алма-Атинская 2/1, 6) Героев Обороны 10, 7)
+                      п-кт. Маяковского 26, 8) Миропольская 2, 10) Большая Кольцевая 5, 12) п-кт Московский 11, 13) Палладина 27, 15) Бальзака 12, 16)
+                      Туполева 12А, 17) Ямская 72, 19) Конева 10/1, 21) Альтаир 22) Палладина 20, 23) Стеценка 30
+                    </span>
+                    <span style="color: #247724">(+0 грн)</span>
+                  </label>
+                </div>
+                <div>
+                  <input type="radio" name="choice" value="option2" id="option2" />
+                  <label for="option2">доставка по Киеву к подъезду (от 199 до 299 грн)</label>
+                </div>
+                <div>
+                  <input type="radio" name="choice" value="option3" id="option3" />
+                  <label for="option3">курьерская доставка по Украине к подъезду (от 199 до 299 грн)</label>
+                </div>
+              </div>
+
+              <div class="radio-group">
+                <h3>Оплата</h3>
+                <div>
+                  <input type="radio" name="choice2" value="option1" id="choice1" checked />
+                  <label for="choice1">Oплата заказа через Приватбанк (+0 грн)</label>
+                </div>
+                <div>
+                  <input type="radio" name="choice2" value="option2" id="choice2" />
+                  <label for="choice2">Оплата в офисе 1) ул. Здолбуновская 7Д (+0 грн)</label>
+                </div>
+              </div>
+
+              <button class="btn calc-button" onclick="SendPostAnti()">Заказать сетки</button>
+            </form>
+          </div>
+          <!-- endregion basket block -->
+
+          <div class="sale margin-outside">
+            <p>
+              -16%
+              <span>скидка на сетки до 27 июня</span>
+            </p>
+          </div>
+
+          <div class="perevagy_block margin-outside">
+            <h3 class="perevagy_carts_header">
+              <span class="perevagy_carts_header_accent">Антикошка:</span>
+              комплектация каждой сетки выдерживает питомца до 17 кг
+            </h3>
+            <div class="perevagy_block_carts">
+              <div class="perevagy_carts_item">
+                <img src="img/photos/setka_nergavejka_antikoshka.jpg" width="173" height="130" alt="сетка - нержавейка" />
+                <p class="perevagy_carts_text">сетка - нержавейка</p>
+              </div>
+              <div class="perevagy_carts_item">
+                <img src="img/photos/zaklepka_na_setke_2020.jpg" width="173" height="130" alt="крючки на заклепках" />
+                <p class="perevagy_carts_text">крючки на заклепках</p>
+              </div>
+              <div class="perevagy_carts_item">
+                <img src="img/photos/kruczki_na_saklepke_moskitos_2020.jpg" width="173" height="130" alt="3D-крючки с защитой" />
+                <p class="perevagy_carts_header_accent">3D-крючки с защитой</p>
+              </div>
+              <div class="perevagy_carts_item">
+                <img src="img/photos/metaliczeskie_ruczki_antikoshka.jpg" width="173" height="130" alt="металлические ручки" />
+                <p class="perevagy_carts_text">металлические ручки</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="margin-outside">
+            <h3>Москитные сетки Антикот выполняют три важные функции</h3>
+            <ol style="margin-bottom: 16px">
+              <li style="list-style: number; margin: 6px 0 6px 0">Защищают от насекомых.</li>
+              <li style="list-style: number; margin: 6px 0 6px 0">Позволяют открывать окна и проветривать помещение.</li>
+              <li style="list-style: number; margin: 6px 0 6px 0">
+                Гарантируют безопасность вашего домашнего питомца, предотвращая его выпадение из окна и повреждение сетки.
+              </li>
+            </ol>
+
+            <h3>Безопасность животных</h3>
+            <ul>
+              <li style="list-style: disc; margin: 6px 0 6px 0">Мы используем сеточное полотно из нержавеющей стали.</li>
+              <li style="list-style: disc; margin: 6px 0 6px 0">
+                20 креплений надежно фиксируют сетку на оконной раме, предотвращая её выпадение под весом кошки или собаки, если они попытаются на неё
+                запрыгнуть.
+              </li>
+              <li style="list-style: disc; margin: 6px 0 6px 0">
+                Установка нашей сетки не требует сверления металлопластикового профиля окна. Инновационная технология позволяет установить её просто и
+                надежно, без дополнительных инструментов.
+              </li>
+            </ul>
+
+            <h3>Мы предлагаем 4 вида Антикошек:</h3>
+            <ul>
+              <li style="list-style: number; margin: 6px 0 6px 0">Оконная;</li>
+              <li style="list-style: number; margin: 6px 0 6px 0">Усиленная (рекомендуется, если вес питомца достигает 17 кг);</li>
+              <li style="list-style: number; margin: 6px 0 6px 0">Наружная;</li>
+              <li style="list-style: number; margin: 6px 0 6px 0">Балконная/террасная;</li>
+            </ul>
+          </div>
+          <div class="komax-phones margin-outside">
+            <div>
+              <img src="img/icons/life_moskitos_mini.png" width="40" height="27" />
+              <a style="color: grey; font-weight: bold" href="tel:+380931705246">093 170-52-46</a>
+            </div>
+            <div>
+              <img src="img/icons/kyivstar_moskitos_mini.png" width="30" height="30" />
+              <a style="color: grey; font-weight: bold" href="tel:+380680151548">068 015-15-48</a>
+            </div>
+
+            <div>
+              <img src="img/icons/viber_logo1.svg" width="30" height="30" />
+              <a href="viber://chat?number=+380500887472" style="color: #8156a3; font-weight: bold" id="viber">viber: 050 088-74-72</a>
+            </div>
+            <div>
+              <img src="img/icons/telegram_logo.svg" width="30" height="30" />
+              <a href="https://t.me/fabrika_moskitos" style="color: #30a8db; font-weight: bold">telegram: fabrika_moskitos</a>
+            </div>
+          </div>
+
+          <div class="komax-article margin-outside komax-kak-sdelat-zakaz">
+            <h2>Как заказать москитную сетку на фабрике Москитос?</h2>
+            <img src="http://moskitos.com.ua/img/mosq.gif" width="100" height="87" />
+            <div class="margin-outside">
+              <p>
+                <strong>1. Укажите размеры сеток:</strong>
+                Расчитайте стоимость необходимых Вам противомоскитных сеток на сайте фабрике Москитос. С 13 июня по 27 июня 2025 года, действует
+                специальная акционная цена - 16%. К примеру, стандартная сетка-антикошка 800мм х 1060мм стоит всего 1480,09 грн (вместо 1760 грн
+                раньше). Минимальная цена: 1380,03 грн.
+              </p>
+
+              <p>
+                <strong>2. Оплата и доставка:</strong>
+                Далее вы выбираете способ оплаты и доставки и через три дня ваши сетки готовы. По вашему желанию мы можем своими силами сделать точный
+                замер и профессионально смонтировать изделия у Вас дома. В этом случаее Вам не прийдется даже выходить издому, мы все сделаем за Вас.
+              </p>
+
+              <p>
+                <strong>3. Установка сеток:</strong>
+                После оплаты заказа, наш менеджер согласовывает с Вами удобное время для монтажа. Если Вы хотите забрать сетки без монтажа, то вы
+                можете это сделать из пунктов выдачи: ул.Здолбуновская 7д (левый берег) или ул. Луговая 16б (Оболонь, Виноградарь), ул. Героев Обороны
+                10 (метро Васильковская, Голосеево, Феофания), п-кт. Маяковского 26 (Троещина), ул. Большая Кольцевая 5 (район Ашана)
+              </p>
+              <p>
+                Удобная доставка по адресу в Киеве - 299 грн; по адресу в Киевской области 299 - 399 грн: Новоселки, Вишневое, Буча, Ирпень, Бровары,
+                Вышгород, Васильков.
+              </p>
+            </div>
+            <div>
+              <h3 class="content-center">Про фабрику</h3>
+              <ul class="komax-profabriku">
+                <li>500 сеток / сутки</li>
+                <li>Современное оборудование</li>
+                <li>Доставка по Украине</li>
+                <li>Оплата кредитными и платежными картами</li>
+                <li>21 лет опыта (2004 - 2025)</li>
+                <li>Мы принимаем заказы 24 часа в сутки</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="margin-outside komax-article">
+            <h2>Цены антикошек на окна</h2>
+            <p>
+              Розничная цена сетки зависит от стоимости комплектующих и труда мастеров. Мы стараемся
+              <a href="http://moskitos.com.ua/proizvodstvo-moskitnykh-setok">использовать в производстве</a>
+              качественные украинские комплектующие, которые позволяют удерживать фиксированную невысокую стоимость изделия.
+            </p>
+            <p>
+              Выбирая надежные антикошки вы однозначно покупаете качественный отечественный продукт. Наша задача состоит в том чтобы вы всегда
+              недорого могли защитить жилые помещения от тополиного пуха и насекомых (мух,комаров) и не переживали о безопасности ваших домашних
+              животных.
+            </p>
+          </div>
+          <div class="komax-ceny-carts margin-outside">
+            <div class="komax-ceny-item">
+              <img src="img/price-images/setka_moskitnaya_001.jpg" alt="сетка №001 белая rehau" />
+              <ul>
+                <li class="komax-ceny-item-title">модель: сетка №005</li>
+                <li>тип: ПВХ окно</li>
+                <li>профиль: антикот</li>
+                <li>цвет: белый</li>
+                <li>размеры: 700мм х 1300мм</li>
+                <li>цена: 1540,08 грн</li>
+              </ul>
+              <div class="komax-ceny-item-button">
+                <button class="btn btn-warning">купить</button>
+              </div>
+            </div>
+
+            <div class="komax-ceny-item">
+              <img src="img/price-images/setka_moskitnaya_012.jpg" alt="сетка №012 для ПВХ окна" />
+              <ul>
+                <li class="komax-ceny-item-title">модель: сетка №005</li>
+                <li>тип: ПВХ окно</li>
+                <li>профиль: антикот</li>
+                <li>цвет: белый</li>
+                <li>размеры: 700мм х 1300мм</li>
+                <li>цена: 1540,08 грн</li>
+              </ul>
+              <div class="komax-ceny-item-button">
+                <button class="btn btn-warning">купить</button>
+              </div>
+            </div>
+
+            <div class="komax-ceny-item">
+              <img src="img/price-images/setka_moskitnaya_043.jpg" alt="сетка №043 для алюминиевого окна" />
+              <ul>
+                <li class="komax-ceny-item-title">модель: сетка №005</li>
+                <li>тип: ПВХ окно</li>
+                <li>профиль: антикот</li>
+                <li>цвет: белый</li>
+                <li>размеры: 700мм х 1300мм</li>
+                <li>цена: 1540,08 грн</li>
+              </ul>
+              <div class="komax-ceny-item-button">
+                <button class="btn btn-warning">купить</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="komax-dostavka-block margin-outside">
+            <p>
+              <strong class="komax-dostavka-price">Бесплатно</strong>
+              <span class="komax-dostavka-text">- доставка на 15 точек самовывоза в Киеве</span>
+            </p>
+            <p>
+              <strong class="komax-dostavka-price">Бесплатно</strong>
+              <span class="komax-dostavka-text">- доставка антикошек на отделение Деливери</span>
+            </p>
+            <p>
+              <strong class="komax-dostavka-price">349 грн</strong>
+              <span class="komax-dostavka-text">- курьерская доставка по Киеву</span>
+            </p>
+          </div>
+
+          <div class="komax-article margin-outside">
+            <h2>Как самостоятельно сделать замер и установку?</h2>
+            <p>
+              Вам необходимо вооружиться рулеткой и замерять размер светового проема окна - это расстояние от края рамы до края рамы в районе резинки
+              при открытой створке. Для вашей помощи мы подготовили инструкцию в картинках и короткий 2-х минутный ролик с пояснениями.
+            </p>
+
+            <h3>Инструкция по замеру в картинках</h3>
+
+            <img src="img/photos/zamer_setki.jpg" />
+
+            <p>Откройте, пожалуйста окно. Возьмите рулетку и замеряйте растояние по высоте от центра окна и по ширине от центра окна.</p>
+
+            <picture>
+              <source srcset="img/photos/kak_pomeriat_setku.webp" type="image/webp" />
+              <img src="img/photos/kak_pomeriat_setku.jpg" alt="инструкция как померять москитку" />
+            </picture>
+
+            <p>Важно замер производите при открытом окне от резинки до резинки.</p>
+
+            <!--Застекление в цветном профиле-->
+            <h3 class="article_head">Видео как замерять сетки - 2 минуты и Вы - профи</h3>
+
+            <iframe
+              class="komax-iframe"
+              src="https://player.vimeo.com/video/136675012?color=ff9933"
+              frameborder="0"
+              webkitallowfullscreen=""
+              mozallowfullscreen=""
+              allowfullscreen=""
+            ></iframe>
+          </div>
+
+          <div class="margin-outside">
+            <h3 class="article_head">Видео как самому установить противомоскитные сетки (30 сек)</h3>
+
+            <iframe
+              class="komax-iframe2"
+              src="https://player.vimeo.com/video/136674940?color=ff9933"
+              frameborder="0"
+              webkitallowfullscreen=""
+              mozallowfullscreen=""
+              allowfullscreen=""
+            ></iframe>
+          </div>
+
+          <div class="komax-question-block margin-outside">
+            <p class="komax-question-content">вызвать замерщика?</p>
+            <div class="komax-question-answer">
+              <p class="komax-question-phone">050 088 74 72</p>
+              <div class="popover-examples">
+                <a
+                  class="btn btn-large btn-warning"
+                  id="kil1"
+                  data-toggle="popover"
+                  title=""
+                  data-html="true"
+                  data-content="&lt;div class='kokoz'&gt;&lt;form&gt;&lt;input   type='text'  class='gogol' name='mailme' style='height:30px; width:150;' required/&gt; &lt;input type='button' value='Отправить' class='btn btn-calc'   onclick='SendPost1();'/&gt;&lt;/form&gt;&lt;/div&gt;"
+                  data-original-title="Укажите Ваш номер телефона"
+                >
+                  Заказать обратный звонок
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="margin-outside">
+            <h2>Технические характеристики сеток</h2>
+
+            <table border="1" cellspacing="0" cellpadding="0" id="super_table">
+              <tbody>
+                <tr>
+                  <td width="180" valign="center">
+                    <p>Профиль ПМС</p>
+                  </td>
+                  <td width="538" valign="center">
+                    <p>Анвис</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="180" valign="center">
+                    <p>Ткань сетки</p>
+                  </td>
+                  <td width="538" valign="center">
+                    <p>Фиберглас (полимерное стекловолокно)</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="180" valign="center">
+                    <p>Цвет</p>
+                  </td>
+                  <td width="538" valign="center">
+                    <p>Белый /Коричневый</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="180" valign="center">
+                    <p>
+                      Кронштейн-фиксатор
+                      <br />
+                      (Z-образный)
+                    </p>
+                  </td>
+                  <td width="538" valign="center">
+                    <p>Нержавеющая сталь</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="180" valign="center">
+                    <p>Уголок-соединитель</p>
+                  </td>
+                  <td width="538" valign="center">
+                    <p>Пластик СП</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="180" valign="center">
+                    <p>Ручка-держатель</p>
+                  </td>
+                  <td width="538" valign="center">
+                    <p>ПВХ</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="180" valign="center">
+                    <p>Максимальная площадь</p>
+                  </td>
+                  <td width="538" valign="center">
+                    <p>3м х 3м</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="komax-article margin-outside">
+            <h2>Подробнее об Антикошках (для пластиковых окон)</h2>
+            <p>
+              Система "Анвис" является внутренней системой, т.е. сетка крепится изнутри окна при помощи металлических поворотных крючков-зацепов,
+              данная система самая распространенная вследствие простого и удобного монтажа, вы можете самостоятельно снять и помыть сетку после
+              долгого использования. Данный вид сеток используется только с металлопластиковыми окнами. Характеристики профиля Анвис доют возможность
+              устанавливать сетку не просверливая отверстия в оконной раме. Стандартные цвета: белый и коричневый.
+            </p>
+            <p>
+              Мы протестировали и гарантируем, что вы легко установите сетку на пластиковое окно REHAU (РЕХАУ), KBE (КБЕ), Deceuninck (Декёнинк), Veka
+              (Века), WDS, Viknaroff (Викнарев), STEKO (Стеко).
+            </p>
+            <p>
+              Важно знать: физическое ограничение для сеток, это изделие 3м х 3м, больше чем эти размеры сетки мы не делаем. Если у Вас нестандартные
+              окна: арочные, круглые и т.д. - к нас есть технологические решения и для таких окон. Для нестандартных сеток обязательна запись на
+              замер:
+              <br />
+              <br />
+              тел. 050 088-74-72,
+              <br />
+              тел. 068 015-15-48.
+            </p>
+          </div>
+
+          <div class="margin-outside">
+            <h3>Сетка для белого окна</h3>
+            <div class="komax-gallery margin-outside">
+              <img src="img/photos/okno_profil_belyj_m.jpg" width="140" height="182" alt="уголок - профиль ПВХ белый" />
+
+              <img src="img/photos/belaya_setka_pvh_okno.jpg" width="140" height="216" alt="белая сетка на пвх окно" />
+
+              <img
+                src="img/photos/belaya_protivomoskitnaya_setka_moskitos.jpg"
+                width="140"
+                height="216"
+                alt="белая противомоскитная сетка москитос"
+              />
+
+              <img src="img/photos/kreplenie_setki_na_dereviannoe_okno.jpg" width="140" height="216" alt="крепление сетки на деревянное окно" />
+            </div>
+
+            <h3>Сетка коричневая для профиля окна: "дуб золотой", "дуб мореный"</h3>
+            <div class="komax-gallery margin-outside">
+              <img src="img/photos/dub_zoloto_m.jpg" width="140" height="216" alt="уголок - профиль ПВХ коричневый" />
+
+              <img src="img/photos/moskitnaya_setka_na_kuxniu.jpg" width="140" height="216" alt="москитная сетка на кухню" />
+
+              <img src="img/photos/setka_moskitnaya_korichnevaya_2_m.jpg" width="140" height="216" alt="антимоскитная сетка от комаров" />
+
+              <img src="img/photos/provivomoskitnaya_setka_v_komnatu.jpg" width="140" height="216" alt="противомоскитная секта в комнату" />
+            </div>
+          </div>
+          <div class="komax-question-block margin-outside">
+            <p class="komax-question-content">остались вопросы?</p>
+            <div class="komax-question-answer">
+              <p class="komax-question-phone">050 088 74 72</p>
+              <div class="popover-examples">
+                <a
+                  class="btn btn-large btn-warning"
+                  id="kil1"
+                  data-toggle="popover"
+                  title=""
+                  data-html="true"
+                  data-content="&lt;div class='kokoz'&gt;&lt;form&gt;&lt;input   type='text'  class='gogol' name='mailme' style='height:30px; width:150;' required/&gt; &lt;input type='button' value='Отправить' class='btn btn-calc'   onclick='SendPost1();'/&gt;&lt;/form&gt;&lt;/div&gt;"
+                  data-original-title="Укажите Ваш номер телефона"
+                >
+                  Заказать обратный звонок
+                </a>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p class="page-update">
+              последнее обновление страницы:
+              <time datetime="2025-04-15T19:26" title="15.04.2025 в 19:26" pubdate="">15.04.2025 в 19:26</time>
+            </p>
+          </div>
+        </main>
+        <div id="komax_nav">
+          <div class="mosk_nav_header">
+            <p>Важно знать</p>
+          </div>
+
+          <nav>
+            <ul class="mosk_nav_items">
+              <li><a href="http://moskitos.com.ua#dialogv52bf36ca52ec3_legend">калькулятор сеток</a></li>
+              <li><a href="http://moskitos.com.ua/oplata-i-dostavka">оплата и доставка</a></li>
+              <li><a href="http://moskitos.com.ua/zamer-i-montag">замер и монтаж</a></li>
+              <li><a href="http://moskitos.com.ua/proizvodstvo-moskitnykh-setok#ofabrike">о фабрике</a></li>
+              <li><a href="http://moskitos.com.ua/proizvodstvo-moskitnykh-setok">производство</a></li>
+              <li><a href="http://moskitos.com.ua#xarakteristiki">характеристики сеток</a></li>
+              <li><a href="http://moskitos.com.ua#photo">фотографии сеток</a></li>
+              <li><a href="http://moskitos.com.ua/kontakty">контакты</a></li>
+            </ul>
+          </nav>
+          <div class="mosk_nav_header">
+            <p>Продукция</p>
+          </div>
+
+          <nav>
+            <ul class="mosk_nav_items">
+              <li><a href="http://moskitos.com.ua">москитные сетки</a></li>
+              <li><a href="http://moskitos.com.ua/podokonniki">подоконники</a></li>
+              <li><a href="http://moskitos.com.ua/okonnye-ruczki">оконные ручки</a></li>
+              <li><a href="http://moskitos.com.ua/antikoshka">сетки - антикошка</a></li>
+            </ul>
+          </nav>
+
+          <!--<img src="source/http://moskitos.com.ua/img/stickers.png"  width="140" height="148" style="margin-top:30px;">-->
+
+          <div class="mosk-adress">
+            <p><strong>Адрес производства:</strong></p>
+            <div itemscope="" itemtype="http://schema.org/Organization">
+              <p itemprop="name">Фабрика "Москитос"</p>
+              <div itemprop="address" itemscope="" itemtype="http://schema.org/PostalAddress">
+                <p>
+                  г.
+                  <span itemprop="addressLocality">Киев</span>
+                  , ул.
+                  <span itemprop="streetAddress">Здолбуновская, 7Д</span>
+                </p>
+              </div>
+              <p>
+                График:
+                <span itemprop="openingHours" datetime="Mo,Fr 09:00−18:00">ПН-ПТ: 09:00 - 18:00</span>
+              </p>
+              <p>
+                тел.: &nbsp;
+                <a href="tel:+380500887472" itemprop="telephone" style="font-weight: bold">050 088-74-72</a>
+                ,
+                <br />
+                тел.: &nbsp;
+                <a href="tel:+380680151548" itemprop="telephone">068 015-15-48</a>
+                ,
+                <br />
+                факс: &nbsp;
+                <a href="tel:+380443531580" itemprop="faxNumber">044 353-15-80</a>
+                ,
+                <br />
+              </p>
+              <p>
+                e-mail:
+                <a href="mailto:setki@moskitos.com.ua" itemprop="email">setki@moskitos.com.ua</a>
+              </p>
+            </div>
+            <div class="popover-examples">
+              <a
+                class="btn btn-warning"
+                style="text-decoration: none; margin-left: 20px"
+                data-toggle="popover"
+                title=""
+                data-html="true"
+                data-content="&lt;img src='../img/karta_proezda.jpg' width='605'&gt;"
+                data-original-title="&lt;strong&gt;Карта проезда на фабрику&lt;/strong&gt;"
+              >
+                карта проезда
+              </a>
+            </div>
+          </div>
+
+          <img src="https://moskitos.com.ua/img/visa_mastercard_m.jpg" width="140" height="176" style="margin-top: 270px; margin-bottom: 10px" />
+          <p>
+            оплата любой
+            <br />
+            платежной системой
+          </p>
+
+          <p style="margin-top: 240px">
+            <img style="margin: 0" src="https://moskitos.com.ua/img/viber_moskitos_mini.png" width="30" height="30" />
+            <span style="color: #8156a3; font-weight: bold">viber:</span>
+            <a
+              href="viber://forward?text=%D0%A4%D0%B0%D0%B1%D1%80%D0%B8%D0%BA%D0%B0%20%D0%9C%D0%BE%D1%81%D0%B8%D0%BA%D1%82%D0%BE%D1%81%20-%20050%20088%2074%2072%2C%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%B7%D0%B0%D1%82%D1%8C%20%D0%BC%D0%BE%D1%81%D0%BA%D0%B8%D1%82%D0%BD%D1%83%D1%8E%20%D1%81%D0%B5%D1%82%D0%BA%D1%83"
+              style="color: #8156a3; font-weight: bold"
+              id="viber"
+            >
+              050 088 74 72
+            </a>
+          </p>
+        </div>
+      </div>
+
+      <footer></footer>
+
+      <div class="logo__block komax-grid-header">
+        <div class="logo__block_image">
+          <a href="http://moskitos.com.ua/ua/antikoshka">
+            <img
+              src="https://moskitos.com.ua/img/logo/logo_fabrika_moskitos_2025.png"
+              width="980"
+              height="58"
+              alt="Фабрика москітних сіток Москітос"
+            />
+          </a>
+        </div>
+      </div>
+
+      <div class="logo__block komax-grid-footer">
+        <div class="logo__block_image">
+          <a href="http://moskitos.com.ua/ua/antikoshka">
+            <img
+              src="https://moskitos.com.ua/img/logo/logo_fabrika_moskitos_2025.png"
+              width="980"
+              height="58"
+              alt="Фабрика москітних сіток Москітос"
+            />
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./src/main.ts">
+
+    </script>
+    <script>
+      const toggleButton = document.querySelector("#brandmenu");
+      const dropdownMenu = document.querySelector(".brandmenu-dropdown");
+
+      toggleButton.addEventListener("click", () => {
+        dropdownMenu.classList.toggle("show");
+      });
+    </script>
+  </body>
+</html>

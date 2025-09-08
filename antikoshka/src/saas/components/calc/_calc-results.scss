@@ -1,0 +1,30 @@
+.calc-results-block {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.calc-results-text {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  p {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  span{
+    font-size: 14px;
+  }
+
+  span.results-sq {
+    font-weight: 700;
+  }
+  span.results-price {
+    font-weight: 700;
+    font-size: 18px;
+    color: rgb(250, 112, 20);
+  }
+}
