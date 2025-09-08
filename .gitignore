@@ -12,6 +12,7 @@ dist-ssr
 *.local
 # Ignore Vite build output
 /dist
+dist
 
 # Editor directories and files
 .vscode/*
