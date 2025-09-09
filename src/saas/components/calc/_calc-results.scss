@@ -11,20 +11,22 @@
 
   p {
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
+    align-items: flex-end;
+    line-height: 18px;
   }
 
-  span{
+  span {
     font-size: 14px;
-  }
 
-  span.results-sq {
-    font-weight: 700;
-  }
-  span.results-price {
-    font-weight: 700;
-    font-size: 18px;
-    color: rgb(250, 112, 20);
+    &.results-sq {
+      font-weight: 700;
+    }
+
+    &.results-price {
+      font-weight: 700;
+      font-size: 18px;
+      color: rgb(250, 112, 20);
+    }
   }
 }
