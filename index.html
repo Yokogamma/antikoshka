@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-   
+
     <title>Document</title>
   </head>
   <body>
@@ -86,6 +86,7 @@
 
             <div id="calc">
               <!-- Шапка формы -->
+
               <legend>
                 <h3 class="calc-head">Калькулятор стоимости сетки на</h3>
                 <p class="calc-subhead">
@@ -96,56 +97,81 @@
               </legend>
 
               <p style="font-style: italic; font-size: 14px">размеры указывайте в мм, без сокращений</p>
+              <form id="calc-form" class="calc-form">
+                <div class="fieldset" style="display: none">
+                  <input type="text" value="kyiv" name="city" />
+                </div>
 
-              <!-- Ширина -->
-              <div class="fieldset">
-                <label title="Ширина рамной москитной сетки в мм, например,если ширина 80 см стоит написать 800">Ширина москитной сетки (мм)</label>
-                <input type="tel" value="850" />
-              </div>
+                <!-- Ширина -->
+                <div class="fieldset">
+                  <label title="Ширина рамной москитной сетки в мм, например,если ширина 80 см стоит написать 800">Ширина москитной сетки (мм)</label>
+                  <input type="tel" value="850" name="width" />
+                </div>
 
-              <!-- Высота -->
-              <div class="fieldset">
-                <label title="Высота москитной сетки в мм">Высота москитной сетки (мм)</label>
+                <!-- Высота -->
+                <div class="fieldset">
+                  <label title="Высота москитной сетки в мм">Высота москитной сетки (мм)</label>
 
-                <input type="tel" value="1000" />
-              </div>
+                  <input type="tel" value="1000" name="height" />
+                </div>
 
-              <!-- Тип окна -->
-              <div class="fieldset">
-                <label title="Сетка с защитой от домашних животных, сетка из алюминия">Тип окна</label>
+                <!-- Тип окна -->
+                <div class="fieldset">
+                  <label title="Сетка с защитой от домашних животных, сетка из алюминия">Тип Антикошки</label>
 
-                <select>
-                  <option value="plastic" selected="selected">Пластиковое</option>
-                  <option value="wood_old">Деревянное (старое)</option>
-                  <option value="wood_new">Деревянное (евроокно)</option>
-                  <option value="aluminum">Алюминиевое</option>
-                </select>
-              </div>
+                  <select name="antikoshka">
+                    <option value="Защитная антикошка" selected="selected">Защитная (до 7кг котик)</option>
+                    <option value="Усиленная антикошка">Усиленная (до 17 кг котик)</option>
+                  </select>
+                </div>
 
-              <!-- Выбор цвета рамки -->
-              <div class="fieldset">
-                <label title="Выбор цвета рамки">Выбор цвета рамки</label>
+                <!-- Тип окна -->
+                <div class="fieldset">
+                  <label title="Сетка с защитой от домашних животных, сетка из алюминия">Тип окна</label>
 
-                <select class="fieldset_select">
-                  <option value="white" selected="selected">Белый</option>
-                  <option value="braun">Коричневый</option>
-                </select>
-              </div>
+                  <select name="type">
+                    <option value="Пластиковое окно" selected="selected">Пластиковое</option>
+                    <option value="Деревянное окно">Деревянное</option>
+                    <option value="Аллюминиевое окно">Аллюминивое</option>
+                  </select>
+                </div>
 
-              <div class="calc-actions">
-                <button class="btn btn-warning calc-button" onclick="antiKoshka(1)">Посчитать</button>
-              </div>
+                <!-- Тип окна -->
+                <div class="fieldset">
+                  <label title="Сетка с защитой от домашних животных, сетка из алюминия">Сетка будет открываться?</label>
+
+                  <select name="open">
+                    <option value="сетка не открывается" selected="selected">Нет</option>
+                    <option value="сетка открывается">Да</option>
+                  </select>
+                </div>
+
+                <!-- Выбор цвета рамки -->
+                <div class="fieldset">
+                  <label title="Выбор цвета рамки">Выбор цвета рамки</label>
+
+                  <select class="fieldset_select" name="color">
+                    <option value="цвет Белый" selected="selected">Белый</option>
+                    <option value="цвет Коричневый">Коричневый</option>
+                    <option value="цвет Антрацит">Антрацит (Графит)</option>
+                  </select>
+                </div>
+
+                <div class="calc-actions">
+                  <button type="submit" class="btn btn-warning calc-button">Посчитать</button>
+                </div>
+              </form>
 
               <div id="calc-results-block" class="calc-results-block">
                 <div class="calc-results-text">
                   <p>
                     <span>Площадь москитной сетки (м2):</span>
-                    <span class="results-sq">0.85</span>
+                    <span id="square-result" class="results-sq"></span>
                   </p>
 
                   <p>
                     <span>Стоимость москитной сетки (грн):</span>
-                    <span class="results-price">1700</span>
+                    <span id="price-result" class="results-price"></span>
                   </p>
                 </div>
 
@@ -159,12 +185,17 @@
           <!-- #region basket block -->
           <div id="basket-block" class="basket-block">
             <div class="basket">
-              <textarea placeholder="Для того чтобы оформить заказ, добавьте сетки в корзину." disabled="disabled">
-1. Cетка на Пластиковое окно: 850мм x 1000 мм - цвет Белый = 1680 грн.</textarea
-              >
-              <textarea placeholder="Для того чтобы оформить заказ, добавьте сетки в корзину." disabled="disabled">
-1. Cетка на Пластиковое окно: 850мм x 1000 мм - цвет Белый = 1680 грн.</textarea
-              >
+              <p class="setka-in-basket-block">
+                1. Защитная антикошка на Пластиковое окно: 850мм x 1000мм - цвет Коричневый = 1680 грн.
+                <br />
+                + сетка открывается
+              </p>
+              <p class="setka-in-basket-block">2. Усиленная антикошка на Деревянное окно: 850мм x 1000мм - цвет Антрацит = 3680 грн.</p>
+              <p class="setka-in-basket-block">
+                3. Защитная антикошка на Аллюминиевое окно: 850мм x 1000мм - цвет Белый = 1600 грн.
+                <br />
+                + сетка открывается
+              </p>
             </div>
 
             <div class="order-summary">
@@ -782,9 +813,7 @@
       </div>
     </div>
 
-    <script type="module" src="./src/main.ts">
-
-    </script>
+    <script type="module" src="./src/main.ts"></script>
     <script>
       const toggleButton = document.querySelector("#brandmenu");
       const dropdownMenu = document.querySelector(".brandmenu-dropdown");
