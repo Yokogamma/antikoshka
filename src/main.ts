@@ -25,7 +25,7 @@ const handleSubmit = async (event: SubmitEvent): Promise<void> => {
 
   // 2. Збираємо дані з форми
   const formData = new FormData(form);
-  const data = Object.fromEntries(formData.entries());
+  const data: Record<string, string> = Object.fromEntries(formData.entries()) as Record<string, string>;
 
   console.log(data);
 
@@ -60,37 +60,30 @@ const handleSubmit = async (event: SubmitEvent): Promise<void> => {
     const squareResult = document.getElementById("square-result") as HTMLElement;
     squareResult.textContent = result.square.toString();
 
-    // const calcResultsBlock = document.getElementById("calc-results-block") as HTMLDivElement;
-    // calcResultsBlock.classList.add("active");
 
     expandBlockById("calc-results-block");
 
-    // 6. сохраняем в локалстораж
+   
+  
 
-    // Преобразуем FormData → объект
+    //const obj = data;
+    data.price = result.price.toString();
+    data.square = result.square.toString();
 
-    const obj: Record<string, string> = {};
-
-    formData.forEach((value, key) => {
-      obj[key] = value.toString();
-    });
-
-    // const obj: Record<string, FormDataEntryValue> = Object.fromEntries(formData.entries());
-
-    const city = obj.city;
+    const city = data.city;
 
     const keysToDelete = ["formData", "moskitos_" + city, "moskitos_temp_" + city];
 
     keysToDelete.forEach((key) => localStorage.removeItem(key));
 
     // Сохраняем в localStorage как строку
-    localStorage.setItem("moskitos_temp_" + city, JSON.stringify(obj));
+    localStorage.setItem("moskitos_temp_" + city, JSON.stringify(data));
 
     if (typeof city === "string") {
       localStorage.setItem("city", city);
     }
 
-    console.log("Сохранено в LocalStorage:", obj);
+    console.log("Сохранено в LocalStorage:", data);
   } catch (error) {
     // 6. ✅ Правильна обробка помилок в TS
     if (error instanceof Error) {
@@ -183,6 +176,7 @@ interface WindowData {
   antikoshka: string;
   type: string;
   color: string;
+  price: string;
 }
 
 function renderList(): void {
@@ -204,7 +198,7 @@ function renderList(): void {
     const li = document.createElement("li");
     li.className = "setka-in-basket-block";
 
-    li.textContent = `${index + 1}. ${item.antikoshka} на ${item.type}: ${item.width} x ${item.height} - ${item.color} = 1680 грн.`;
+    li.textContent = `${index + 1}. ${item.antikoshka} на ${item.type}: ${item.width} x ${item.height} - ${item.color} = ${item.price} грн.`;
 
     // Создаём кнопку удаления
     const deleteBtn = document.createElement("button");
@@ -247,7 +241,7 @@ function updateSummary(): void {
   const count = existing.length;
 
   // Сумма width (преобразуем строки в числа)
-  const sumWidth = existing.reduce((sum, item) => sum + Number(item.width || 0), 0);
+  const sumWidth = existing.reduce((sum, item) => sum + Number(item.price || 0), 0);
 
   if (countEl) countEl.textContent = count.toString();
   if (sumWidthEl) sumWidthEl.textContent = sumWidth.toString();
@@ -305,7 +299,7 @@ zakazForm.addEventListener("submit", async (e) => {
   };
 
   try {
-    const response = await fetch("http://ava.test/api/zakaz/moskitos", {
+    const response = await fetch("https://dim.komax.com.ua/api/zakaz/moskitos", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
