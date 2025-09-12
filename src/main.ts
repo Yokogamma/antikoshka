@@ -1,5 +1,12 @@
 import "./style.scss";
 
+const toggleButton = document.querySelector("#brandmenu") as HTMLFormElement;
+const dropdownMenu = document.querySelector(".brandmenu-dropdown") as HTMLFormElement;
+
+toggleButton.addEventListener("click", () => {
+  dropdownMenu.classList.toggle("show");
+});
+
 // ✅ Описуємо інтерфейс для відповіді від сервера.
 // Це гарантує, що ми очікуємо саме ті дані і в потрібному форматі.
 interface ApiResponse {
@@ -23,7 +30,7 @@ const handleSubmit = async (event: SubmitEvent): Promise<void> => {
   console.log(data);
 
   const url = "https://dim.komax.com.ua/api/calc/moskitos"; // Замініть на ваш URL
- // const url = "http://ava.test/api/calc/moskitos"; // Замініть на ваш URL
+  // const url = "http://ava.test/api/calc/moskitos"; // Замініть на ваш URL
   try {
     // 3. Виконуємо fetch-запит
     const response = await fetch(url, {
@@ -52,6 +59,38 @@ const handleSubmit = async (event: SubmitEvent): Promise<void> => {
 
     const squareResult = document.getElementById("square-result") as HTMLElement;
     squareResult.textContent = result.square.toString();
+
+    // const calcResultsBlock = document.getElementById("calc-results-block") as HTMLDivElement;
+    // calcResultsBlock.classList.add("active");
+
+    expandBlockById("calc-results-block");
+
+    // 6. сохраняем в локалстораж
+
+    // Преобразуем FormData → объект
+
+    const obj: Record<string, string> = {};
+
+    formData.forEach((value, key) => {
+      obj[key] = value.toString();
+    });
+
+    // const obj: Record<string, FormDataEntryValue> = Object.fromEntries(formData.entries());
+
+    const city = obj.city;
+
+    const keysToDelete = ["formData", "moskitos_" + city, "moskitos_temp_" + city];
+
+    keysToDelete.forEach((key) => localStorage.removeItem(key));
+
+    // Сохраняем в localStorage как строку
+    localStorage.setItem("moskitos_temp_" + city, JSON.stringify(obj));
+
+    if (typeof city === "string") {
+      localStorage.setItem("city", city);
+    }
+
+    console.log("Сохранено в LocalStorage:", obj);
   } catch (error) {
     // 6. ✅ Правильна обробка помилок в TS
     if (error instanceof Error) {
@@ -64,3 +103,248 @@ const handleSubmit = async (event: SubmitEvent): Promise<void> => {
 
 // Додаємо обробник події
 form.addEventListener("submit", handleSubmit);
+
+function addBasket(): void {
+  const city: string | null = localStorage.getItem("city");
+
+  if (city) {
+    // Достаём строку из localStorage
+    const formDataStr: string | null = localStorage.getItem("moskitos_temp_" + city);
+
+    if (formDataStr) {
+      // Преобразуем JSON-строку обратно в объект
+      const obj: Record<string, string> = JSON.parse(formDataStr);
+
+      // Достаём существующий массив объектов или создаём новый
+      const existing: Record<string, string>[] = JSON.parse(localStorage.getItem("moskitos_setki_kyiv") || "[]");
+
+      // Добавляем новый объект
+      existing.push(obj);
+
+      // Сохраняем обратно
+      localStorage.setItem("moskitos_setki_kyiv", JSON.stringify(existing));
+
+      console.log("Обновлённый массив объектов:", existing);
+      renderList();
+
+      localStorage.setItem("windows_lastAdded", Date.now().toString());
+
+      // const calcResultsBlock = document.getElementById("basket-block") as HTMLDivElement;
+      // calcResultsBlock.classList.add("active");
+
+      expandBlockById("basket-block");
+    }
+  }
+}
+
+const addbutton = document.getElementById("addBasket");
+addbutton?.addEventListener("click", () => addBasket());
+
+const fillOrder = document.getElementById("open-fill-order");
+fillOrder?.addEventListener("click", () => openFillOrder());
+
+function openFillOrder(): void {
+  expandBlockById("fill-order");
+}
+
+function expandBlockById(blockId: string) {
+  const block = document.getElementById(blockId) as HTMLDivElement | null;
+  if (!block) return;
+
+  block.classList.add("active");
+  block.style.maxHeight = block.scrollHeight + "px";
+}
+
+// function collapseBlockById(blockId: string) {
+//   const block = document.getElementById(blockId) as HTMLDivElement | null;
+//   if (!block) return;
+
+//   block.style.maxHeight = "0";
+//     block.classList.remove("active");
+// }
+
+
+
+// Функция для схлопывания блока
+function collapseAllBlocks() {
+  const activeBlocks = document.querySelectorAll<HTMLElement>(".active");
+
+  // Схлопываем все блоки
+  activeBlocks.forEach((block) => {
+    block.style.maxHeight = "0";
+    block.classList.remove("active");
+  });
+}
+
+interface WindowData {
+  city: string;
+  width: string;
+  height: string;
+  antikoshka: string;
+  type: string;
+  color: string;
+}
+
+function renderList(): void {
+  const listEl = document.getElementById("list");
+  if (!listEl) return;
+
+  const existing: WindowData[] = JSON.parse(localStorage.getItem("moskitos_setki_kyiv") || "[]");
+
+  // Если массив пустой, вызываем foo() и выходим
+  if (existing.length === 0) {
+    collapseAllBlocks();
+    listEl.innerHTML = ""; // на всякий случай очищаем список
+    return;
+  }
+
+  listEl.innerHTML = "";
+
+  existing.forEach((item, index) => {
+    const li = document.createElement("li");
+    li.className = "setka-in-basket-block";
+
+    li.textContent = `${index + 1}. ${item.antikoshka} на ${item.type}: ${item.width} x ${item.height} - ${item.color} = 1680 грн.`;
+
+    // Создаём кнопку удаления
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Удалить";
+    deleteBtn.style.marginLeft = "10px";
+
+    deleteBtn.addEventListener("click", () => {
+      removeWindow(index);
+    });
+
+    li.appendChild(deleteBtn);
+    listEl.appendChild(li);
+  });
+  // Получить
+  const lastAddedStr = localStorage.getItem("windows_lastAdded");
+  if (lastAddedStr) {
+    const lastAdded = new Date(parseInt(lastAddedStr));
+    console.log("Последнее добавление:", lastAdded.toLocaleString());
+  }
+
+  updateSummary();
+}
+
+// Удаление объекта по индексу
+function removeWindow(index: number): void {
+  const existing: WindowData[] = JSON.parse(localStorage.getItem("moskitos_setki_kyiv") || "[]");
+  existing.splice(index, 1); // удаляем элемент
+  localStorage.setItem("moskitos_setki_kyiv", JSON.stringify(existing));
+  renderList();
+}
+
+// Функция для обновления сводки
+function updateSummary(): void {
+  const existing: WindowData[] = JSON.parse(localStorage.getItem("moskitos_setki_kyiv") || "[]");
+
+  const countEl = document.getElementById("count");
+  const sumWidthEl = document.getElementById("sumWidth");
+
+  // Количество объектов
+  const count = existing.length;
+
+  // Сумма width (преобразуем строки в числа)
+  const sumWidth = existing.reduce((sum, item) => sum + Number(item.width || 0), 0);
+
+  if (countEl) countEl.textContent = count.toString();
+  if (sumWidthEl) sumWidthEl.textContent = sumWidth.toString();
+}
+
+renderList();
+
+interface OrderData {
+  name: string;
+  email: string;
+  phone: string;
+  windows: WindowData[];
+  count: number;
+  sumWidth: number;
+  payment: string;
+  delivery: string;
+}
+
+// Получаем форму
+const zakazForm = document.getElementById("zakaz") as HTMLFormElement;
+const orderResult = document.getElementById("orderResult");
+
+zakazForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const formData = new FormData(zakazForm);
+  const name = formData.get("name")?.toString() || "";
+  const email = formData.get("email")?.toString() || "";
+  const phone = formData.get("phone")?.toString() || "";
+
+  // Получаем выбранную радио-кнопку
+  const paymentInput = zakazForm.querySelector<HTMLInputElement>('input[name="choice2"]:checked');
+  const payment = paymentInput?.value || "";
+
+  const deliveryInput = zakazForm.querySelector<HTMLInputElement>('input[name="choice"]:checked');
+  const delivery = deliveryInput?.value || "";
+
+  // Достаём массив окон из localStorage
+  const windows: WindowData[] = JSON.parse(localStorage.getItem("moskitos_setki_kyiv") || "[]");
+
+  // Считаем sumWidth и count
+  const count = windows.length;
+  const sumWidth = windows.reduce((sum, w) => sum + Number(w.width || 0), 0);
+
+  // Формируем объект для отправки
+  const orderData: OrderData = {
+    name,
+    email,
+    phone,
+    windows,
+    count,
+    sumWidth,
+    payment,
+    delivery,
+  };
+
+  try {
+    const response = await fetch("http://ava.test/api/zakaz/moskitos", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(orderData),
+    });
+
+    if (!response.ok) {
+      throw new Error("Ошибка отправки заказа");
+    }
+
+    // Предположим, сервер возвращает { orderNumber: "12345" }
+    const result = await response.json();
+    const orderNumber = result.orderNumber;
+
+    if (orderResult) {
+      // Показываем номер заказа
+      orderResult.textContent = `Ваш номер заказа: ${orderNumber}`;
+
+      // Очистка формы и корзины
+      zakazForm.reset();
+      localStorage.removeItem("moskitos_setki_kyiv");
+
+      collapseAllBlocks();
+
+      // Ждём, пока браузер пересчитает layout
+      requestAnimationFrame(() => {
+        // Можно добавить небольшую задержку, чтобы блоки успели схлопнуться визуально
+        setTimeout(() => {
+          if (orderResult) {
+            orderResult.scrollIntoView({ behavior: "smooth", block: "start" });
+            orderResult.classList.add("highlight");
+            setTimeout(() => orderResult.classList.remove("highlight"), 2000);
+          }
+        }, 500); // 50ms — достаточно для плавного визуального эффекта
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    if (orderResult) orderResult.textContent = "Произошла ошибка при отправке заказа.";
+  }
+});

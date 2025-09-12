@@ -176,7 +176,7 @@
                 </div>
 
                 <div class="add-basket-actions">
-                  <button class="btn btn-warning calc-button" onclick="addBasketKoshka()">добавить в корзину</button>
+                  <button class="btn btn-warning calc-button" id="addBasket">добавить в корзину</button>
                 </div>
               </div>
             </div>
@@ -184,47 +184,39 @@
 
           <!-- #region basket block -->
           <div id="basket-block" class="basket-block">
-            <div class="basket">
-              <p class="setka-in-basket-block">
-                1. Защитная антикошка на Пластиковое окно: 850мм x 1000мм - цвет Коричневый = 1680 грн.
-                <br />
-                + сетка открывается
-              </p>
-              <p class="setka-in-basket-block">2. Усиленная антикошка на Деревянное окно: 850мм x 1000мм - цвет Антрацит = 3680 грн.</p>
-              <p class="setka-in-basket-block">
-                3. Защитная антикошка на Аллюминиевое окно: 850мм x 1000мм - цвет Белый = 1600 грн.
-                <br />
-                + сетка открывается
-              </p>
-            </div>
-
+            
+              <ul id="list" class="basket"></ul>
+              
+            
             <div class="order-summary">
               <p>
                 <span>Cтоимость заказа:</span>
-                <span>1</span>
+                <span id="count">1</span>
                 <span>шт. -</span>
-                <span>1680</span>
+                <span id="sumWidth">1680</span>
                 <span>грн.</span>
               </p>
               <div>
-                <button class="btn">Оформить заказ</button>
+                <button class="btn" id="open-fill-order">Оформить заказ</button>
                 <button class="btn">Очистить</button>
               </div>
             </div>
+          </div>
 
-            <form class="send-zakaz">
+          <div class="basket-block" id="fill-order">
+            <form class="send-zakaz" id="zakaz">
               <div class="client-info">
                 <div class="fieldset">
                   <label>Имя, Фамилия</label>
-                  <input type="text" />
+                  <input type="text" name="name" />
                 </div>
                 <div class="fieldset">
                   <label>Ваш телефон</label>
-                  <input type="text" />
+                  <input type="tel" name="phone" />
                 </div>
                 <div class="fieldset">
                   <label>Ваш email</label>
-                  <input type="text" />
+                  <input type="email" name="email" />
                 </div>
               </div>
 
@@ -264,11 +256,11 @@
                 </div>
               </div>
 
-              <button class="btn calc-button" onclick="SendPostAnti()">Заказать сетки</button>
+              <button type="submit" class="btn calc-button">Заказать сетки</button>
             </form>
           </div>
           <!-- endregion basket block -->
-
+          <div id="orderResult"></div>
           <div class="sale margin-outside">
             <p>
               -16%
@@ -814,13 +806,5 @@
     </div>
 
     <script type="module" src="./src/main.ts"></script>
-    <script>
-      const toggleButton = document.querySelector("#brandmenu");
-      const dropdownMenu = document.querySelector(".brandmenu-dropdown");
-
-      toggleButton.addEventListener("click", () => {
-        dropdownMenu.classList.toggle("show");
-      });
-    </script>
   </body>
 </html>

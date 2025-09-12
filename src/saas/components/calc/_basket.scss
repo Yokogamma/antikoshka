@@ -3,7 +3,19 @@
   flex-direction: column;
   gap: 20px;
   padding-bottom: 20px;
+  
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease, padding 0.3s ease;
+  padding: 0 10px; /* начальный padding уменьшен */
 }
+
+.basket-block.active {
+  max-height: 800px; /* должно быть больше, чем реальная высота блока */
+  padding: 10px; /* восстанавливаем внутренние отступы */
+  padding: 0 0 20px 0;
+}
+
 
 .basket {
   background-color: rgb(253, 230, 138);
@@ -11,6 +23,10 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin: 0;
+  list-style: none;
+
+  
 }
 
 .order-summary {
@@ -124,4 +140,9 @@
   font-weight: 400;
   overflow-wrap: break-word;
   padding: 4px;
+}
+
+#orderResult.highlight {
+  background: yellow;
+  transition: background 0.5s ease;
 }
