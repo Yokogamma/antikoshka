@@ -23,14 +23,19 @@ const handleSubmit = async (event: SubmitEvent): Promise<void> => {
   // 1. Запобігаємо стандартній поведінці форми
   event.preventDefault();
 
+  const oldOrder = document.getElementById("orderResult");
+  if (oldOrder) {
+    oldOrder.innerHTML = ""; // полностью очищает содержимое, включая вложенные элементы
+  }
+
   // 2. Збираємо дані з форми
   const formData = new FormData(form);
   const data: Record<string, string> = Object.fromEntries(formData.entries()) as Record<string, string>;
 
   console.log(data);
 
-  const url = "https://dim.komax.com.ua/api/calc/moskitos"; // Замініть на ваш URL
-  // const url = "http://ava.test/api/calc/moskitos"; // Замініть на ваш URL
+  //const url = "https://dim.komax.com.ua/api/calc/moskitos"; // Замініть на ваш URL
+  const url = "http://ava.test/api/calc/moskitos"; // Замініть на ваш URL
   try {
     // 3. Виконуємо fetch-запит
     const response = await fetch(url, {
@@ -42,17 +47,25 @@ const handleSubmit = async (event: SubmitEvent): Promise<void> => {
     });
 
     if (!response.ok) {
-      throw new Error(`Помилка мережі: ${response.status}`);
+      // пробуем вытащить текст/JSON ошибки от сервера
+      let errorMessage = `Помилка: ${response.status}`;
+      try {
+        const errorData = await response.json();
+        if (errorData.error) {
+          errorMessage = errorData.error;
+        }
+      } catch {
+        // если сервер вернул не JSON
+        errorMessage = await response.text();
+      }
+
+      throw new Error(errorMessage);
     }
 
     // 4. Отримуємо JSON і типізуємо його згідно з нашим інтерфейсом
     const result: ApiResponse = await response.json();
-
-    // 5. Виводимо дані в консоль. TypeScript вже "знає",
-    // що в 'result' є поля 'square' і 'price'.
-    console.log("Дані успішно отримано:");
-    console.log("Площа (square):", result.square);
-    console.log("Ціна (price):", result.price);
+    console.log("✅ Площа (square):", result.square);
+    console.log("✅ Ціна (price):", result.price);
 
     const priceResult = document.getElementById("price-result") as HTMLElement;
     priceResult.textContent = result.price.toString();
@@ -60,11 +73,7 @@ const handleSubmit = async (event: SubmitEvent): Promise<void> => {
     const squareResult = document.getElementById("square-result") as HTMLElement;
     squareResult.textContent = result.square.toString();
 
-
     expandBlockById("calc-results-block");
-
-   
-  
 
     //const obj = data;
     data.price = result.price.toString();
@@ -85,9 +94,8 @@ const handleSubmit = async (event: SubmitEvent): Promise<void> => {
 
     console.log("Сохранено в LocalStorage:", data);
   } catch (error) {
-    // 6. ✅ Правильна обробка помилок в TS
     if (error instanceof Error) {
-      console.error("Виникла проблема із запитом:", error.message);
+      console.error("❌ Виникла проблема:", error.message);
     } else {
       console.error("Невідома помилка:", error);
     }
@@ -146,6 +154,12 @@ function expandBlockById(blockId: string) {
 
   block.classList.add("active");
   block.style.maxHeight = block.scrollHeight + "px";
+
+  window.addEventListener("resize", () => {
+    if (block.classList.contains("active")) {
+      block.style.maxHeight = block.scrollHeight + "px";
+    }
+  });
 }
 
 // function collapseBlockById(blockId: string) {
@@ -155,8 +169,6 @@ function expandBlockById(blockId: string) {
 //   block.style.maxHeight = "0";
 //     block.classList.remove("active");
 // }
-
-
 
 // Функция для схлопывания блока
 function collapseAllBlocks() {
@@ -253,11 +265,13 @@ interface OrderData {
   name: string;
   email: string;
   phone: string;
-  windows: WindowData[];
-  count: number;
-  sumWidth: number;
+  setki: WindowData[];
+  quantity: number;
+  total_cost: number;
   payment: string;
   delivery: string;
+  city: string;
+  address: string;
 }
 
 // Получаем форму
@@ -271,6 +285,7 @@ zakazForm.addEventListener("submit", async (e) => {
   const name = formData.get("name")?.toString() || "";
   const email = formData.get("email")?.toString() || "";
   const phone = formData.get("phone")?.toString() || "";
+  const address = formData.get("address")?.toString() || "";
 
   // Получаем выбранную радио-кнопку
   const paymentInput = zakazForm.querySelector<HTMLInputElement>('input[name="choice2"]:checked');
@@ -280,26 +295,31 @@ zakazForm.addEventListener("submit", async (e) => {
   const delivery = deliveryInput?.value || "";
 
   // Достаём массив окон из localStorage
-  const windows: WindowData[] = JSON.parse(localStorage.getItem("moskitos_setki_kyiv") || "[]");
+  const setki: WindowData[] = JSON.parse(localStorage.getItem("moskitos_setki_kyiv") || "[]");
+
+  const city = setki[0]?.city;
 
   // Считаем sumWidth и count
-  const count = windows.length;
-  const sumWidth = windows.reduce((sum, w) => sum + Number(w.width || 0), 0);
+  const quantity = setki.length;
+  const total_cost = setki.reduce((sum, w) => sum + Number(w.width || 0), 0);
 
   // Формируем объект для отправки
   const orderData: OrderData = {
     name,
     email,
     phone,
-    windows,
-    count,
-    sumWidth,
+    setki,
+    quantity,
+    total_cost,
     payment,
     delivery,
+    city,
+    address,
   };
 
   try {
-    const response = await fetch("https://dim.komax.com.ua/api/zakaz/moskitos", {
+    // const response = await fetch("https://dim.komax.com.ua/api/zakaz/moskitos", {
+    const response = await fetch("http://ava.test/api/zakaz/moskitos", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -322,6 +342,7 @@ zakazForm.addEventListener("submit", async (e) => {
       // Очистка формы и корзины
       zakazForm.reset();
       localStorage.removeItem("moskitos_setki_kyiv");
+      initDeliveryAddress();
 
       collapseAllBlocks();
 
@@ -341,4 +362,17 @@ zakazForm.addEventListener("submit", async (e) => {
     console.error(error);
     if (orderResult) orderResult.textContent = "Произошла ошибка при отправке заказа.";
   }
+});
+
+import { windowStates, initCalcForm } from "./ts/form";
+
+// Экспортируем объект состояний, если нужно использовать где-то ещё
+export { windowStates };
+
+import { initDeliveryAddress } from "./ts/form";
+
+// Инициализация формы
+document.addEventListener("DOMContentLoaded", () => {
+  initCalcForm(windowStates);
+  initDeliveryAddress();
 });

@@ -115,17 +115,7 @@
                   <input type="tel" value="1000" name="height" />
                 </div>
 
-                <!-- Тип окна -->
-                <div class="fieldset">
-                  <label title="Сетка с защитой от домашних животных, сетка из алюминия">Тип Антикошки</label>
-
-                  <select name="antikoshka">
-                    <option value="Защитная антикошка" selected="selected">Защитная (до 7кг котик)</option>
-                    <option value="Усиленная антикошка">Усиленная (до 17 кг котик)</option>
-                  </select>
-                </div>
-
-                <!-- Тип окна -->
+                <!-- Тип окна пластиковое / деревянное -->
                 <div class="fieldset">
                   <label title="Сетка с защитой от домашних животных, сетка из алюминия">Тип окна</label>
 
@@ -133,6 +123,16 @@
                     <option value="Пластиковое окно" selected="selected">Пластиковое</option>
                     <option value="Деревянное окно">Деревянное</option>
                     <option value="Аллюминиевое окно">Аллюминивое</option>
+                  </select>
+                </div>
+
+                <!-- Вид антикошки -->
+                <div class="fieldset">
+                  <label title="Сетка с защитой от домашних животных, сетка из алюминия">Тип Антикошки</label>
+
+                  <select name="antikoshka">
+                    <option value="Защитная антикошка" selected="selected">Защитная (до 7кг котик)</option>
+                    <option value="Усиленная антикошка">Усиленная (до 17 кг котик)</option>
                   </select>
                 </div>
 
@@ -184,10 +184,8 @@
 
           <!-- #region basket block -->
           <div id="basket-block" class="basket-block">
-            
-              <ul id="list" class="basket"></ul>
-              
-            
+            <ul id="list" class="basket"></ul>
+
             <div class="order-summary">
               <p>
                 <span>Cтоимость заказа:</span>
@@ -223,7 +221,7 @@
               <div class="radio-group">
                 <h3>Доставка</h3>
                 <div>
-                  <input type="radio" name="choice" value="option1" checked id="option1" />
+                  <input type="radio" name="choice" value="3" checked id="option1" />
                   <label for="option1">
                     <span style="color: #247724; font-weight: bold">самовывоз (Киев)</span>
                     <span>
@@ -235,12 +233,18 @@
                   </label>
                 </div>
                 <div>
-                  <input type="radio" name="choice" value="option2" id="option2" />
+                  <input type="radio" name="choice" value="1" id="option2" />
                   <label for="option2">доставка по Киеву к подъезду (от 199 до 299 грн)</label>
                 </div>
                 <div>
-                  <input type="radio" name="choice" value="option3" id="option3" />
+                  <input type="radio" name="choice" value="2" id="option3" />
                   <label for="option3">курьерская доставка по Украине к подъезду (от 199 до 299 грн)</label>
+                </div>
+              </div>
+              <div class="client-info" id="delivery-address">
+                <div class="fieldset">
+                  <label title="Адрес доставки">Адрес доставки</label>
+                  <input type="text" name="address" />
                 </div>
               </div>
 
