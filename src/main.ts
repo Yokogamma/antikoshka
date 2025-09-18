@@ -365,6 +365,20 @@ zakazForm.addEventListener("submit", async (e) => {
         // Можно добавить небольшую задержку, чтобы блоки успели схлопнуться визуально
         setTimeout(() => {
           if (orderResult) {
+            
+            const orderLink = document.getElementById("orderLink") as HTMLAnchorElement | null;
+
+            if (orderLink) {
+              // Разбираем текущий href
+              const url = new URL(orderLink.href, window.location.origin);
+
+              // Обновляем параметр current
+              url.searchParams.set("current", orderNumber.toString());
+
+              // Присваиваем обратно
+              orderLink.href = url.toString();
+            }
+
             showCurrentBlock();
             orderResult.scrollIntoView({ behavior: "smooth", block: "start" });
             orderResult.classList.add("highlight");
