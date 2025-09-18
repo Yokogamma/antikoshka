@@ -5,18 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Document</title>
-    <script type="module" crossorigin src="./assets/index-BgFK_qGS.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-iwRDmZGo.css">
+    <script type="module" crossorigin src="./assets/index-CR9EJnvI.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-CghAoOFL.css">
   </head>
   <body>
     <div class="wrapper">
       <header>
-        <a class="change-language" href="https://moskitos.com.ua/ua/kontakty">ua</a>
+        <!-- <a class="change-language" href="https://moskitos.com.ua/ua/kontakty">ua</a> -->
         <div class="logo-block">
           <div class="logo-container">
             <a class="logo-link" href="https://moskitos.com.ua">
               <img class="logo-image" src="https://moskitos.com.ua/img/komar_moskitos_logo.png" id="logo" alt="Фабрика Москитос - Киев" />
-              <span class="logo-text">Фабрика Москитос!</span>
+              <span class="logo-text">Фабрика Москитос</span>
             </a>
 
             <img id="brandmenu" src="https://moskitos.com.ua/img/icon_menu.svg" />
@@ -54,10 +54,10 @@
               <a href="https://moskitos.com.ua">Москитные сетки</a>
             </li>
             <li>
-              <a class="products-active" href="https://moskitos.com.ua/okonnye-ruczki">Антикошки</a>
+              <a class="products-active" href="https://moskitos.com.ua/antikoshka">Антикошки</a>
             </li>
             <li>
-              <a href="https://moskitos.com.ua/podokonniki">Плиссе</a>
+              <a href="https://moskitos.com.ua/podokonniki">Подоконники</a>
             </li>
           </ul>
         </div>
@@ -117,17 +117,7 @@
                   <input type="tel" value="1000" name="height" />
                 </div>
 
-                <!-- Тип окна -->
-                <div class="fieldset">
-                  <label title="Сетка с защитой от домашних животных, сетка из алюминия">Тип Антикошки</label>
-
-                  <select name="antikoshka">
-                    <option value="Защитная антикошка" selected="selected">Защитная (до 7кг котик)</option>
-                    <option value="Усиленная антикошка">Усиленная (до 17 кг котик)</option>
-                  </select>
-                </div>
-
-                <!-- Тип окна -->
+                <!-- Тип окна пластиковое / деревянное -->
                 <div class="fieldset">
                   <label title="Сетка с защитой от домашних животных, сетка из алюминия">Тип окна</label>
 
@@ -135,6 +125,16 @@
                     <option value="Пластиковое окно" selected="selected">Пластиковое</option>
                     <option value="Деревянное окно">Деревянное</option>
                     <option value="Аллюминиевое окно">Аллюминивое</option>
+                  </select>
+                </div>
+
+                <!-- Вид антикошки -->
+                <div class="fieldset">
+                  <label title="Сетка с защитой от домашних животных, сетка из алюминия">Тип Антикошки</label>
+
+                  <select name="antikoshka">
+                    <option value="Защитная антикошка" selected="selected">Защитная (до 7кг котик)</option>
+                    <option value="Усиленная антикошка">Усиленная (до 17 кг котик)</option>
                   </select>
                 </div>
 
@@ -186,10 +186,8 @@
 
           <!-- #region basket block -->
           <div id="basket-block" class="basket-block">
-            
-              <ul id="list" class="basket"></ul>
-              
-            
+            <ul id="list" class="basket"></ul>
+
             <div class="order-summary">
               <p>
                 <span>Cтоимость заказа:</span>
@@ -199,8 +197,8 @@
                 <span>грн.</span>
               </p>
               <div>
-                <button class="btn" id="open-fill-order">Оформить заказ</button>
-                <button class="btn">Очистить</button>
+                <button class="btn btn-warning" id="open-fill-order">Оформить заказ</button>
+                <!-- <button class="btn">Очистить</button> -->
               </div>
             </div>
           </div>
@@ -225,7 +223,7 @@
               <div class="radio-group">
                 <h3>Доставка</h3>
                 <div>
-                  <input type="radio" name="choice" value="option1" checked id="option1" />
+                  <input type="radio" name="choice" value="3" checked id="option1" />
                   <label for="option1">
                     <span style="color: #247724; font-weight: bold">самовывоз (Киев)</span>
                     <span>
@@ -237,12 +235,18 @@
                   </label>
                 </div>
                 <div>
-                  <input type="radio" name="choice" value="option2" id="option2" />
+                  <input type="radio" name="choice" value="1" id="option2" />
                   <label for="option2">доставка по Киеву к подъезду (от 199 до 299 грн)</label>
                 </div>
                 <div>
-                  <input type="radio" name="choice" value="option3" id="option3" />
+                  <input type="radio" name="choice" value="2" id="option3" />
                   <label for="option3">курьерская доставка по Украине к подъезду (от 199 до 299 грн)</label>
+                </div>
+              </div>
+              <div class="client-info" id="delivery-address">
+                <div class="fieldset">
+                  <label title="Адрес доставки">Адрес доставки</label>
+                  <input type="text" name="address" />
                 </div>
               </div>
 
@@ -258,11 +262,20 @@
                 </div>
               </div>
 
-              <button type="submit" class="btn calc-button">Заказать сетки</button>
+              <button type="submit" class="btn btn-warning calc-button">Заказать сетки</button>
             </form>
           </div>
           <!-- endregion basket block -->
-          <div id="orderResult"></div>
+
+          <div class="show-current">
+            <h3>
+              Номер Вашего заказа:
+              <span id="orderResult"></span>
+            </h3>
+            <p>Выберите наиболее удобную для Вас точку самовывоза в Киеве.</p>
+            <a id="orderLink" class="btn-large-success" href="/kontakty?current=60252&amp;show=on">выбрать точку самовывоза</a>
+          </div>
+
           <div class="sale margin-outside">
             <p>
               -16%
