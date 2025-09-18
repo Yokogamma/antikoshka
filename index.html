@@ -195,8 +195,8 @@
                 <span>грн.</span>
               </p>
               <div>
-                <button class="btn" id="open-fill-order">Оформить заказ</button>
-                <button class="btn">Очистить</button>
+                <button class="btn btn-warning" id="open-fill-order">Оформить заказ</button>
+                <!-- <button class="btn">Очистить</button> -->
               </div>
             </div>
           </div>
@@ -260,11 +260,20 @@
                 </div>
               </div>
 
-              <button type="submit" class="btn calc-button">Заказать сетки</button>
+              <button type="submit" class="btn btn-warning calc-button">Заказать сетки</button>
             </form>
           </div>
           <!-- endregion basket block -->
-          <div id="orderResult"></div>
+
+          <div class="show-current">
+            <h3>
+              Номер Вашего заказа:
+              <span id="orderResult"></span>
+            </h3>
+            <p>Выберите наиболее удобную для Вас точку самовывоза в Киеве.</p>
+            <a class="btn-large-success" href="/kontakty?current=60252&amp;show=on">выбрать точку самовывоза</a>
+          </div>
+
           <div class="sale margin-outside">
             <p>
               -16%

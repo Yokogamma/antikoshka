@@ -3,7 +3,7 @@
   flex-direction: column;
   gap: 20px;
   padding-bottom: 20px;
-  
+
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.5s ease, padding 0.3s ease;
@@ -16,7 +16,6 @@
   padding: 0 0 20px 0;
 }
 
-
 .basket {
   background-color: rgb(253, 230, 138);
   padding: 12px;
@@ -25,8 +24,6 @@
   gap: 10px;
   margin: 0;
   list-style: none;
-
-  
 }
 
 .order-summary {
@@ -41,6 +38,7 @@
     justify-content: space-between;
     align-items: center;
     gap: 10px;
+    padding-right: 20px;
   }
 
   p {
@@ -48,10 +46,6 @@
     font-size: 18px;
   }
 
-  div {
-    display: flex;
-    gap: 10px;
-  }
 }
 
 .order-summary .label {
@@ -123,9 +117,8 @@
   }
 }
 
-
-
 .setka-in-basket-block {
+  position: relative;
   background-color: rgba(250, 250, 250, 0.6);
   border-color: rgba(118, 118, 118, 0.3);
   border-style: solid;
@@ -139,10 +132,38 @@
   line-height: 18px;
   font-weight: 400;
   overflow-wrap: break-word;
-  padding: 4px;
+  padding: 4px 20px 4px 4px;
 }
 
 #orderResult.highlight {
   background: yellow;
   transition: background 0.5s ease;
+}
+
+.setka-item {
+  position: absolute;
+  top: 5px;
+  right: 3px;
+
+  display: block;
+  border: none;
+  color: #df4760; /* красный крестик */
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 700;
+  height: 18px;
+  width: 18px;
+  background: none;
+  float: right;
+  padding: 0;
+  text-align: center;
+  line-height: 18px; /* чтобы крестик был по центру */
+  border-radius: 50%; /* делает кнопку круглой */
+  transition: background 0.3s, color 0.3s;
+  cursor: pointer;
+}
+
+.setka-item:hover {
+  background-color: #df4760; /* красный фон */
+  color: #fff; /* белый крестик */
 }

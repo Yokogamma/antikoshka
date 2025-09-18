@@ -34,8 +34,8 @@ const handleSubmit = async (event: SubmitEvent): Promise<void> => {
 
   console.log(data);
 
-  //const url = "https://dim.komax.com.ua/api/calc/moskitos"; // Замініть на ваш URL
-  const url = "http://ava.test/api/calc/moskitos"; // Замініть на ваш URL
+  const url = "https://dim.komax.com.ua/api/calc/moskitos"; // Замініть на ваш URL
+  //const url = "http://ava.test/api/calc/moskitos"; // Замініть на ваш URL
   try {
     // 3. Виконуємо fetch-запит
     const response = await fetch(url, {
@@ -72,7 +72,7 @@ const handleSubmit = async (event: SubmitEvent): Promise<void> => {
 
     const squareResult = document.getElementById("square-result") as HTMLElement;
     squareResult.textContent = result.square.toString();
-
+    hideCurrentBlock();
     expandBlockById("calc-results-block");
 
     //const obj = data;
@@ -214,7 +214,21 @@ function renderList(): void {
 
     // Создаём кнопку удаления
     const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "Удалить";
+    deleteBtn.className = "setka-item";
+
+    const svgStr = `
+  <svg xmlns="http://www.w3.org/2000/svg" 
+       fill="none" 
+       viewBox="0 0 24 24" 
+       stroke-width="1.5" 
+       stroke="currentColor" 
+       class="size-6"
+       aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 L18 6 M6 6 L18 18"></path>
+  </svg>
+`;
+
+    deleteBtn.innerHTML = svgStr;
     deleteBtn.style.marginLeft = "10px";
 
     deleteBtn.addEventListener("click", () => {
@@ -318,8 +332,8 @@ zakazForm.addEventListener("submit", async (e) => {
   };
 
   try {
-    // const response = await fetch("https://dim.komax.com.ua/api/zakaz/moskitos", {
-    const response = await fetch("http://ava.test/api/zakaz/moskitos", {
+    const response = await fetch("https://dim.komax.com.ua/api/zakaz/moskitos", {
+      // const response = await fetch("http://ava.test/api/zakaz/moskitos", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -351,6 +365,7 @@ zakazForm.addEventListener("submit", async (e) => {
         // Можно добавить небольшую задержку, чтобы блоки успели схлопнуться визуально
         setTimeout(() => {
           if (orderResult) {
+            showCurrentBlock();
             orderResult.scrollIntoView({ behavior: "smooth", block: "start" });
             orderResult.classList.add("highlight");
             setTimeout(() => orderResult.classList.remove("highlight"), 2000);
@@ -376,3 +391,17 @@ document.addEventListener("DOMContentLoaded", () => {
   initCalcForm(windowStates);
   initDeliveryAddress();
 });
+
+function showCurrentBlock(): void {
+  const block = document.querySelector(".show-current");
+  if (block) {
+    block.classList.add("active");
+  }
+}
+
+function hideCurrentBlock(): void {
+  const block = document.querySelector(".show-current");
+  if (block) {
+    block.classList.remove("active");
+  }
+}
