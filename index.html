@@ -68,8 +68,12 @@
             <p class="language__panel_box">
               <!-- <a class="language__panel_phone" href="tel:+380500887472">050 088-74-72</a> -->
               <a class="language__panel_phone" href="tel:+380680151548">068 015-15-48</a>
-              <a class="language__panel_phone" href="viber://chat?number=+380500887472"><img src="img/icons/viber_logo1.svg" width="20" height="20" /></a>
-              <a class="language__panel_phone" href="https://t.me/fabrika_moskitos"><img src="img/icons/telegram_logo.svg" width="20" height="20" /></a>
+              <a class="language__panel_phone" href="viber://chat?number=+380500887472">
+                <img src="img/icons/viber_logo1.svg" width="20" height="20" />
+              </a>
+              <a class="language__panel_phone" href="https://t.me/fabrika_moskitos">
+                <img src="img/icons/telegram_logo.svg" width="20" height="20" />
+              </a>
             </p>
           </div>
 
@@ -79,7 +83,12 @@
           <div class="calc-block">
             <!-- сетка сбоку калькулятора -->
             <div id="moskitos_img">
-              <img src="https://moskitos.com.ua/img/moskitos_moskitnaya_setka.jpg" alt="Антикішка Москітос" />
+              <picture>
+                <!-- для экранов шириной до 720px -->
+                <source srcset="/public/img/photos/antikoshka_moskitos.jpg" media="(max-width: 720px)" />
+                <!-- для экранов больше -->
+                <img src="https://moskitos.com.ua/img/moskitos_moskitnaya_setka.jpg" alt="Антикошка Москитос" />
+              </picture>
             </div>
 
             <!-- калькулятор - форма -->
