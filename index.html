@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Document</title>
-    <script type="module" crossorigin src="./assets/index-CR9EJnvI.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-CghAoOFL.css">
+    <script type="module" crossorigin src="./assets/index-DJUe2xXR.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-C_3d4D20.css">
   </head>
   <body>
     <div class="wrapper">
@@ -70,8 +70,12 @@
             <p class="language__panel_box">
               <!-- <a class="language__panel_phone" href="tel:+380500887472">050 088-74-72</a> -->
               <a class="language__panel_phone" href="tel:+380680151548">068 015-15-48</a>
-              <a class="language__panel_phone" href="viber://chat?number=+380500887472"><img src="img/icons/viber_logo1.svg" width="20" height="20" /></a>
-              <a class="language__panel_phone" href="https://t.me/fabrika_moskitos"><img src="img/icons/telegram_logo.svg" width="20" height="20" /></a>
+              <a class="language__panel_phone" href="viber://chat?number=+380500887472">
+                <img src="img/icons/viber_logo1.svg" width="20" height="20" />
+              </a>
+              <a class="language__panel_phone" href="https://t.me/fabrika_moskitos">
+                <img src="img/icons/telegram_logo.svg" width="20" height="20" />
+              </a>
             </p>
           </div>
 
@@ -81,7 +85,12 @@
           <div class="calc-block">
             <!-- сетка сбоку калькулятора -->
             <div id="moskitos_img">
-              <img src="https://moskitos.com.ua/img/moskitos_moskitnaya_setka.jpg" alt="Антикішка Москітос" />
+              <picture>
+                <!-- для экранов шириной до 720px -->
+                <source srcset="./assets/antikoshka_moskitos-DPrV2d0F.jpg" media="(max-width: 720px)" />
+                <!-- для экранов больше -->
+                <img src="https://moskitos.com.ua/img/moskitos_moskitnaya_setka.jpg" alt="Антикошка Москитос" />
+              </picture>
             </div>
 
             <!-- калькулятор - форма -->
@@ -90,12 +99,12 @@
               <!-- Шапка формы -->
 
               <legend>
-                <h3 class="calc-head">Калькулятор стоимости сетки на</h3>
-                <p class="calc-subhead">
+                <h3 class="calc-head">Калькулятор стоимости сетки</h3>
+                <!-- <p class="calc-subhead">
                   <a class="calc-active-link" href="#okna" onclick="calculateOkna();">окна</a>
                   /
                   <a class="calc-passive-link" href="#dveri" onclick="calculateDveri();">двери</a>
-                </p>
+                </p> -->
               </legend>
 
               <p style="font-style: italic; font-size: 14px">размеры указывайте в мм, без сокращений</p>
