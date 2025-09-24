@@ -1,89 +1,10 @@
-export const windowStates = {
-  type: {
-    "Пластиковое окно": {
-      type: {
-        status: 1,
-        selected: 0,
-        options: { "Пластиковое окно": "Пластиковое", "Деревянное окно": "Деревянное", "Аллюминиевое окно": "Алюминиевое" },
-      },
-      antikoshka: {
-        status: 1,
-        selected: 0,
-        options: { "Защитная антикошка": "Защитная (до 7кг котик)", "Усиленная антикошка": "Усиленная (до 17 кг котик)" },
-      },
-      open: { status: 1, selected: 0, options: { "сетка не открывается": "Нет", "сетка открывается": "Да" } },
-    },
-    "Деревянное окно": {
-      type: {
-        status: 1,
-        selected: 1,
-        options: { "Пластиковое окно": "Пластиковое", "Деревянное окно": "Деревянное", "Аллюминиевое окно": "Алюминиевое" },
-      },
-      antikoshka: { status: 1, selected: 0, options: { "Защитная антикошка": "Защитная (до 7кг котик)" } },
-      open: { status: 1, selected: 0, options: { "сетка не открывается": "Нет" } },
-    },
-    "Аллюминиевое окно": {
-      type: {
-        status: 1,
-        selected: 2,
-        options: { "Пластиковое окно": "Пластиковое", "Деревянное окно": "Деревянное", "Аллюминиевое окно": "Алюминиевое" },
-      },
-      antikoshka: { status: 1, selected: 0, options: { "Защитная антикошка": "Защитная (до 7кг котик)" } },
-      open: { status: 1, selected: 0, options: { "сетка не открывается": "Нет" } },
-    },
-  },
-  antikoshka: {
-    "Защитная антикошка": {
-      type: {
-        status: 1,
-        selected: 0,
-        options: { "Пластиковое окно": "Пластиковое", "Деревянное окно": "Деревянное", "Аллюминиевое окно": "Алюминиевое" },
-      },
-      antikoshka: {
-        status: 1,
-        selected: 0,
-        options: { "Защитная антикошка": "Защитная (до 7кг котик)", "Усиленная антикошка": "Усиленная (до 17 кг котик)" },
-      },
-      open: { status: 1, selected: 0, options: { "сетка не открывается": "Нет", "сетка открывается": "Да" } },
-    },
-    "Усиленная антикошка": {
-      type: { status: 1, selected: 0, options: { "Пластиковое окно": "Пластиковое" } }, // только пластиковое
-      antikoshka: {
-        status: 1,
-        selected: 1,
-        options: { "Защитная антикошка": "Защитная (до 7кг котик)", "Усиленная антикошка": "Усиленная (до 17 кг котик)" },
-      },
-      open: { status: 1, selected: 0, options: { "сетка не открывается": "Нет" } },
-    },
-  },
-  open: {
-    "сетка не открывается": {
-      type: {
-        status: 1,
-        selected: 0,
-        options: { "Пластиковое окно": "Пластиковое", "Деревянное окно": "Деревянное", "Аллюминиевое окно": "Алюминиевое" },
-      },
-      antikoshka: {
-        status: 1,
-        selected: 0,
-        options: { "Защитная антикошка": "Защитная (до 7кг котик)", "Усиленная антикошка": "Усиленная (до 17 кг котик)" },
-      },
-      open: { status: 1, selected: 0, options: { "сетка не открывается": "Нет", "сетка открывается": "Да" } },
-    },
-    "сетка открывается": {
-      type: { status: 1, selected: 0, options: { "Пластиковое окно": "Пластиковое" } }, // только пластиковое
-      antikoshka: { status: 1, selected: 0, options: { "Защитная антикошка": "Защитная (до 7кг котик)" } },
-      open: { status: 1, selected: 1, options: { "сетка не открывается": "Нет", "сетка открывается": "Да" } },
-    },
-  },
-};
-
-// calcForm.ts
+import { translations } from "./translations";
+import { windowStates } from "./windowstates";
 
 export interface FieldState {
   status: number;
   selected: number;
-  options: Record<string, string>;
+  options: string[];
 }
 
 export interface WindowState {
@@ -98,57 +19,88 @@ export interface WindowStates {
   open: Record<string, WindowState>;
 }
 
-export function initCalcForm(states: WindowStates) {
+/**
+ * Инициализирует форму калькулятора с учетом выбранного языка и состояний полей.
+ * @param language - Язык для отображения (например, 'ru' или 'uk').
+ */
+export function initCalcForm(language: "ru" | "uk") {
   const typeSelect = document.querySelector<HTMLSelectElement>('select[name="type"]')!;
   const antikoshkaSelect = document.querySelector<HTMLSelectElement>('select[name="antikoshka"]')!;
   const openSelect = document.querySelector<HTMLSelectElement>('select[name="open"]')!;
+
   const antikoshkaField = antikoshkaSelect.closest(".fieldset")!;
   const openField = openSelect.closest(".fieldset")!;
 
-  function updateSelectOptions(select: HTMLSelectElement, optionsObj: Record<string, string>, selectedIndex: number) {
+  function updateSelectOptions(
+    select: HTMLSelectElement,
+    availableOptions: string[],
+    selectedIndex: number,
+    fieldTranslations: Record<string, { data: string; label: string }>
+  ) {
     select.innerHTML = "";
-    Object.keys(optionsObj).forEach((key, index) => {
+    availableOptions.forEach((key, index) => {
       const option = document.createElement("option");
       option.value = key;
-      option.textContent = optionsObj[key];
-      if (index === selectedIndex) option.selected = true;
+      const translation = fieldTranslations[key];
+      if (translation) {
+        option.textContent = translation.label; // Используем label для текста
+        option.setAttribute("data-user-text", translation.data); // Используем data для атрибута
+      }
+      if (index === selectedIndex) {
+        option.selected = true;
+      }
       select.appendChild(option);
     });
   }
 
   function updateFields(state: WindowState) {
-    typeSelect.disabled = state.type.status === 0;
-    typeSelect.closest(".fieldset")!.classList.toggle("hidden", state.type.status === 0);
-    updateSelectOptions(typeSelect, state.type.options, state.type.selected);
+    const langTranslations = translations[language];
 
-    antikoshkaSelect.disabled = state.antikoshka.status === 0;
-    antikoshkaField.classList.toggle("hidden", state.antikoshka.status === 0);
-    updateSelectOptions(antikoshkaSelect, state.antikoshka.options, state.antikoshka.selected);
+    // Обновляем select 'type'
+    const typeState = state.type;
+    typeSelect.disabled = typeState.status === 0;
+    typeSelect.closest(".fieldset")!.classList.toggle("hidden", typeState.status === 0);
+    updateSelectOptions(typeSelect, typeState.options, typeState.selected, langTranslations.type);
 
-    openSelect.disabled = state.open.status === 0;
-    openField.classList.toggle("hidden", state.open.status === 0);
-    updateSelectOptions(openSelect, state.open.options, state.open.selected);
+    // Обновляем select 'antikoshka'
+    const antikoshkaState = state.antikoshka;
+    antikoshkaSelect.disabled = antikoshkaState.status === 0;
+    antikoshkaField.classList.toggle("hidden", antikoshkaState.status === 0);
+    updateSelectOptions(antikoshkaSelect, antikoshkaState.options, antikoshkaState.selected, langTranslations.antikoshka);
+
+    // Обновляем select 'open'
+    const openState = state.open;
+    openSelect.disabled = openState.status === 0;
+    openField.classList.toggle("hidden", openState.status === 0);
+    updateSelectOptions(openSelect, openState.options, openState.selected, langTranslations.open);
   }
 
   function getStateBySelection(field: keyof WindowStates, value: string): WindowState {
-    return states[field][value] ?? states.type["Пластиковое окно"];
+    const statesForField = windowStates[field];
+    // Assert that `value` is a key of the object.
+    return statesForField[value as keyof typeof statesForField];
   }
 
-  typeSelect.addEventListener("change", () => updateFields(getStateBySelection("type", typeSelect.value)));
-  antikoshkaSelect.addEventListener("change", () => updateFields(getStateBySelection("antikoshka", antikoshkaSelect.value)));
-  openSelect.addEventListener("change", () => updateFields(getStateBySelection("open", openSelect.value)));
+  typeSelect.addEventListener("change", (e) => {
+    const selectedValue = (e.target as HTMLSelectElement).value;
+    updateFields(getStateBySelection("type", selectedValue));
+  });
 
-  updateFields(states.type["Пластиковое окно"]);
+  antikoshkaSelect.addEventListener("change", (e) => {
+    const selectedValue = (e.target as HTMLSelectElement).value;
+    updateFields(getStateBySelection("antikoshka", selectedValue));
+  });
 
-  // const form = document.getElementById('calc-form') as HTMLFormElement;
-  // form.addEventListener('submit', e => {
-  //   e.preventDefault();
-  //   const formData = new FormData(form);
-  //   const data: Record<string, string> = {};
-  //   formData.forEach((value, key) => { data[key] = value.toString(); });
-  //   console.log('Данные формы:', data);
-  //   alert('Форма отправлена! Проверьте консоль.');
-  // });
+  openSelect.addEventListener("change", (e) => {
+    const selectedValue = (e.target as HTMLSelectElement).value;
+    updateFields(getStateBySelection("open", selectedValue));
+  });
+
+  // Инициализация формы при загрузке.
+  const initialKey = Object.keys(windowStates.type)[0] as keyof typeof windowStates.type;
+  if (initialKey) {
+    updateFields(windowStates.type[initialKey]);
+  }
 }
 
 // deliveryAddress.ts

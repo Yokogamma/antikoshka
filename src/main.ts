@@ -393,16 +393,17 @@ zakazForm.addEventListener("submit", async (e) => {
   }
 });
 
-import { windowStates, initCalcForm } from "./ts/form";
+import {initCalcForm } from "./ts/form";
+
 
 // Экспортируем объект состояний, если нужно использовать где-то ещё
-export { windowStates };
+
 
 import { initDeliveryAddress } from "./ts/form";
 
 // Инициализация формы
 document.addEventListener("DOMContentLoaded", () => {
-  initCalcForm(windowStates);
+  initCalcForm("uk");
   initDeliveryAddress();
 });
 
