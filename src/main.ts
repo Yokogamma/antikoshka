@@ -365,6 +365,7 @@ zakazForm.addEventListener("submit", async (e) => {
         // Можно добавить небольшую задержку, чтобы блоки успели схлопнуться визуально
         setTimeout(() => {
           if (orderResult) {
+            
             const orderLink = document.getElementById("orderLink") as HTMLAnchorElement | null;
 
             if (orderLink) {
@@ -401,18 +402,7 @@ import { initDeliveryAddress } from "./ts/form";
 
 // Инициализация формы
 document.addEventListener("DOMContentLoaded", () => {
-  // 1. Получаем язык из URL
-  const pathParts = window.location.pathname.split("/");
-  const currentLang = pathParts[1] || "ru";
-
-  // 2. Проверяем, что полученный язык — один из ожидаемых
-  // Это важно для безопасности и предотвращения ошибок
-  const availableLanguages = ["ru", "uk"];
-  const finalLang = availableLanguages.includes(currentLang) ? currentLang : "ru";
-
-  // 3. Передаем язык в функцию инициализации
-  initCalcForm(windowStates, finalLang as "ru" | "uk");
-
+  initCalcForm(windowStates);
   initDeliveryAddress();
 });
 

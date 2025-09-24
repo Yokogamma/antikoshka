@@ -1,161 +1,85 @@
-import { translations } from "./translation";
-
 export const windowStates = {
   type: {
-    [translations.ru.window_type_plastic]: {
+    "Пластиковое окно": {
       type: {
         status: 1,
         selected: 0,
-        options: {
-          [translations.ru.window_type_plastic]: translations.ru.window_plastic,
-          [translations.ru.window_type_wood]: translations.ru.window_wood,
-          [translations.ru.window_type_aluminum]: translations.ru.window_aluminum,
-        },
+        options: { "Пластиковое окно": "Пластиковое", "Деревянное окно": "Деревянное", "Аллюминиевое окно": "Алюминиевое" },
       },
       antikoshka: {
         status: 1,
         selected: 0,
-        options: {
-          [translations.ru.antikoshka_safe]: translations.ru.antikoshka_safe_desc,
-          [translations.ru.antikoshka_reinforced]: translations.ru.antikoshka_reinforced_desc,
-        },
+        options: { "Защитная антикошка": "Защитная (до 7кг котик)", "Усиленная антикошка": "Усиленная (до 17 кг котик)" },
       },
-      open: {
-        status: 1,
-        selected: 0,
-        options: {
-          [translations.ru.open_no]: translations.ru.open_no_desc,
-          [translations.ru.open_yes]: translations.ru.open_yes_desc,
-        },
-      },
+      open: { status: 1, selected: 0, options: { "сетка не открывается": "Нет", "сетка открывается": "Да" } },
     },
-    [translations.ru.window_type_wood]: {
+    "Деревянное окно": {
       type: {
         status: 1,
         selected: 1,
-        options: {
-          [translations.ru.window_type_plastic]: translations.ru.window_plastic,
-          [translations.ru.window_type_wood]: translations.ru.window_wood,
-          [translations.ru.window_type_aluminum]: translations.ru.window_aluminum,
-        },
+        options: { "Пластиковое окно": "Пластиковое", "Деревянное окно": "Деревянное", "Аллюминиевое окно": "Алюминиевое" },
       },
-      antikoshka: {
-        status: 1,
-        selected: 0,
-        options: { [translations.ru.antikoshka_safe]: translations.ru.antikoshka_safe_desc },
-      },
-      open: { status: 1, selected: 0, options: { [translations.ru.open_no]: translations.ru.open_no_desc } },
+      antikoshka: { status: 1, selected: 0, options: { "Защитная антикошка": "Защитная (до 7кг котик)" } },
+      open: { status: 1, selected: 0, options: { "сетка не открывается": "Нет" } },
     },
-    [translations.ru.window_type_aluminum]: {
+    "Аллюминиевое окно": {
       type: {
         status: 1,
         selected: 2,
-        options: {
-          [translations.ru.window_type_plastic]: translations.ru.window_plastic,
-          [translations.ru.window_type_wood]: translations.ru.window_wood,
-          [translations.ru.window_type_aluminum]: translations.ru.window_aluminum,
-        },
+        options: { "Пластиковое окно": "Пластиковое", "Деревянное окно": "Деревянное", "Аллюминиевое окно": "Алюминиевое" },
       },
-      antikoshka: {
-        status: 1,
-        selected: 0,
-        options: { [translations.ru.antikoshka_safe]: translations.ru.antikoshka_safe_desc },
-      },
-      open: { status: 1, selected: 0, options: { [translations.ru.open_no]: translations.ru.open_no_desc } },
+      antikoshka: { status: 1, selected: 0, options: { "Защитная антикошка": "Защитная (до 7кг котик)" } },
+      open: { status: 1, selected: 0, options: { "сетка не открывается": "Нет" } },
     },
   },
   antikoshka: {
-    [translations.ru.antikoshka_safe]: {
+    "Защитная антикошка": {
       type: {
         status: 1,
         selected: 0,
-        options: {
-          [translations.ru.window_type_plastic]: translations.ru.window_plastic,
-          [translations.ru.window_type_wood]: translations.ru.window_wood,
-          [translations.ru.window_type_aluminum]: translations.ru.window_aluminum,
-        },
+        options: { "Пластиковое окно": "Пластиковое", "Деревянное окно": "Деревянное", "Аллюминиевое окно": "Алюминиевое" },
       },
       antikoshka: {
         status: 1,
         selected: 0,
-        options: {
-          [translations.ru.antikoshka_safe]: translations.ru.antikoshka_safe_desc,
-          [translations.ru.antikoshka_reinforced]: translations.ru.antikoshka_reinforced_desc,
-        },
+        options: { "Защитная антикошка": "Защитная (до 7кг котик)", "Усиленная антикошка": "Усиленная (до 17 кг котик)" },
       },
-      open: {
-        status: 1,
-        selected: 0,
-        options: {
-          [translations.ru.open_no]: translations.ru.open_no_desc,
-          [translations.ru.open_yes]: translations.ru.open_yes_desc,
-        },
-      },
+      open: { status: 1, selected: 0, options: { "сетка не открывается": "Нет", "сетка открывается": "Да" } },
     },
-    [translations.ru.antikoshka_reinforced]: {
-      type: { status: 1, selected: 0, options: { [translations.ru.window_type_plastic]: translations.ru.window_plastic } },
+    "Усиленная антикошка": {
+      type: { status: 1, selected: 0, options: { "Пластиковое окно": "Пластиковое" } }, // только пластиковое
       antikoshka: {
         status: 1,
         selected: 1,
-        options: {
-          [translations.ru.antikoshka_safe]: translations.ru.antikoshka_safe_desc,
-          [translations.ru.antikoshka_reinforced]: translations.ru.antikoshka_reinforced_desc,
-        },
+        options: { "Защитная антикошка": "Защитная (до 7кг котик)", "Усиленная антикошка": "Усиленная (до 17 кг котик)" },
       },
-      open: { status: 1, selected: 0, options: { [translations.ru.open_no]: translations.ru.open_no_desc } },
+      open: { status: 1, selected: 0, options: { "сетка не открывается": "Нет" } },
     },
   },
   open: {
-    [translations.ru.open_no]: {
+    "сетка не открывается": {
       type: {
         status: 1,
         selected: 0,
-        options: {
-          [translations.ru.window_type_plastic]: translations.ru.window_plastic,
-          [translations.ru.window_type_wood]: translations.ru.window_wood,
-          [translations.ru.window_type_aluminum]: translations.ru.window_aluminum,
-        },
+        options: { "Пластиковое окно": "Пластиковое", "Деревянное окно": "Деревянное", "Аллюминиевое окно": "Алюминиевое" },
       },
       antikoshka: {
         status: 1,
         selected: 0,
-        options: {
-          [translations.ru.antikoshka_safe]: translations.ru.antikoshka_safe_desc,
-          [translations.ru.antikoshka_reinforced]: translations.ru.antikoshka_reinforced_desc,
-        },
+        options: { "Защитная антикошка": "Защитная (до 7кг котик)", "Усиленная антикошка": "Усиленная (до 17 кг котик)" },
       },
-      open: {
-        status: 1,
-        selected: 0,
-        options: {
-          [translations.ru.open_no]: translations.ru.open_no_desc,
-          [translations.ru.open_yes]: translations.ru.open_yes_desc,
-        },
-      },
+      open: { status: 1, selected: 0, options: { "сетка не открывается": "Нет", "сетка открывается": "Да" } },
     },
-    [translations.ru.open_yes]: {
-      type: { status: 1, selected: 0, options: { [translations.ru.window_type_plastic]: translations.ru.window_plastic } },
-      antikoshka: { status: 1, selected: 0, options: { [translations.ru.antikoshka_safe]: translations.ru.antikoshka_safe_desc } },
-      open: {
-        status: 1,
-        selected: 1,
-        options: {
-          [translations.ru.open_no]: translations.ru.open_no_desc,
-          [translations.ru.open_yes]: translations.ru.open_yes_desc,
-        },
-      },
+    "сетка открывается": {
+      type: { status: 1, selected: 0, options: { "Пластиковое окно": "Пластиковое" } }, // только пластиковое
+      antikoshka: { status: 1, selected: 0, options: { "Защитная антикошка": "Защитная (до 7кг котик)" } },
+      open: { status: 1, selected: 1, options: { "сетка не открывается": "Нет", "сетка открывается": "Да" } },
     },
   },
 };
 
+// calcForm.ts
 
-
-
-
-
-
-
-// Определяем интерфейсы как раньше
 export interface FieldState {
   status: number;
   selected: number;
@@ -174,28 +98,19 @@ export interface WindowStates {
   open: Record<string, WindowState>;
 }
 
-// Теперь функция принимает массив состояний и текущий язык
-export function initCalcForm(states: WindowStates, lang: "ru" | "uk") {
-  const t = translations[lang]; // Получаем объект переводов для выбранного языка
-
+export function initCalcForm(states: WindowStates) {
   const typeSelect = document.querySelector<HTMLSelectElement>('select[name="type"]')!;
   const antikoshkaSelect = document.querySelector<HTMLSelectElement>('select[name="antikoshka"]')!;
   const openSelect = document.querySelector<HTMLSelectElement>('select[name="open"]')!;
   const antikoshkaField = antikoshkaSelect.closest(".fieldset")!;
   const openField = openSelect.closest(".fieldset")!;
 
-  function updateSelectOptions(
-    select: HTMLSelectElement,
-    optionsObj: Record<string, string>,
-    selectedIndex: number
-  ) {
+  function updateSelectOptions(select: HTMLSelectElement, optionsObj: Record<string, string>, selectedIndex: number) {
     select.innerHTML = "";
     Object.keys(optionsObj).forEach((key, index) => {
       const option = document.createElement("option");
-      // Используем ключ перевода из `optionsObj`
-      option.value = key; 
-      // А здесь получаем переведенный текст
-      option.textContent = optionsObj[key]; 
+      option.value = key;
+      option.textContent = optionsObj[key];
       if (index === selectedIndex) option.selected = true;
       select.appendChild(option);
     });
@@ -216,21 +131,24 @@ export function initCalcForm(states: WindowStates, lang: "ru" | "uk") {
   }
 
   function getStateBySelection(field: keyof WindowStates, value: string): WindowState {
-    return states[field][value] ?? states.type[t.window_type_plastic];
+    return states[field][value] ?? states.type["Пластиковое окно"];
   }
 
-  typeSelect.addEventListener("change", () =>
-    updateFields(getStateBySelection("type", typeSelect.value))
-  );
-  antikoshkaSelect.addEventListener("change", () =>
-    updateFields(getStateBySelection("antikoshka", antikoshkaSelect.value))
-  );
-  openSelect.addEventListener("change", () =>
-    updateFields(getStateBySelection("open", openSelect.value))
-  );
+  typeSelect.addEventListener("change", () => updateFields(getStateBySelection("type", typeSelect.value)));
+  antikoshkaSelect.addEventListener("change", () => updateFields(getStateBySelection("antikoshka", antikoshkaSelect.value)));
+  openSelect.addEventListener("change", () => updateFields(getStateBySelection("open", openSelect.value)));
 
-  // Инициализируем форму с выбранным языком
-  updateFields(states.type[t.window_type_plastic]);
+  updateFields(states.type["Пластиковое окно"]);
+
+  // const form = document.getElementById('calc-form') as HTMLFormElement;
+  // form.addEventListener('submit', e => {
+  //   e.preventDefault();
+  //   const formData = new FormData(form);
+  //   const data: Record<string, string> = {};
+  //   formData.forEach((value, key) => { data[key] = value.toString(); });
+  //   console.log('Данные формы:', data);
+  //   alert('Форма отправлена! Проверьте консоль.');
+  // });
 }
 
 // deliveryAddress.ts
