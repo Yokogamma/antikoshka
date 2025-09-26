@@ -1,4 +1,5 @@
 import "./style.scss";
+import {initCalcForm, initDeliveryAddress} from "./ts/form";
 
 const toggleButton = document.querySelector("#brandmenu") as HTMLFormElement;
 const dropdownMenu = document.querySelector(".brandmenu-dropdown") as HTMLFormElement;
@@ -393,13 +394,6 @@ zakazForm.addEventListener("submit", async (e) => {
   }
 });
 
-import {initCalcForm } from "./ts/form";
-
-
-// Экспортируем объект состояний, если нужно использовать где-то ещё
-
-
-import { initDeliveryAddress } from "./ts/form";
 
 // Инициализация формы
 document.addEventListener("DOMContentLoaded", () => {
