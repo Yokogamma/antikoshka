@@ -1,5 +1,6 @@
 import "./style.scss";
-import {initCalcForm, initDeliveryAddress} from "./ts/form";
+import {generateTranslationsFromForm, initCalcForm, initDeliveryAddress} from "./ts/form";
+import {collectFormTextData} from "./ts/calc_form/user_data";
 
 const toggleButton = document.querySelector("#brandmenu") as HTMLFormElement;
 const dropdownMenu = document.querySelector(".brandmenu-dropdown") as HTMLFormElement;
@@ -24,19 +25,21 @@ const handleSubmit = async (event: SubmitEvent): Promise<void> => {
   // 1. Запобігаємо стандартній поведінці форми
   event.preventDefault();
 
-  const oldOrder = document.getElementById("orderResult");
-  if (oldOrder) {
-    oldOrder.innerHTML = ""; // полностью очищает содержимое, включая вложенные элементы
-  }
+  // const oldOrder = document.getElementById("orderResult");
+  // if (oldOrder) {
+  //   oldOrder.innerHTML = ""; // полностью очищает содержимое, включая вложенные элементы
+  // }
 
   // 2. Збираємо дані з форми
   const formData = new FormData(form);
   const data: Record<string, string> = Object.fromEntries(formData.entries()) as Record<string, string>;
 
-  console.log(data);
+  const finalData = collectFormTextData(form);
 
-  const url = "https://dim.komax.com.ua/api/calc/moskitos"; // Замініть на ваш URL
-  //const url = "http://ava.test/api/calc/moskitos"; // Замініть на ваш URL
+  // console.log(data);
+
+   const url = "https://dim.komax.com.ua/api/calc/moskitos"; // Замініть на ваш URL
+ //const url = "http://ava.test/api/calc/moskitos"; // Замініть на ваш URL
   try {
     // 3. Виконуємо fetch-запит
     const response = await fetch(url, {
@@ -65,8 +68,8 @@ const handleSubmit = async (event: SubmitEvent): Promise<void> => {
 
     // 4. Отримуємо JSON і типізуємо його згідно з нашим інтерфейсом
     const result: ApiResponse = await response.json();
-    console.log("✅ Площа (square):", result.square);
-    console.log("✅ Ціна (price):", result.price);
+    //console.log("✅ Площа (square):", result.square);
+    //console.log("✅ Ціна (price):", result.price);
 
     const priceResult = document.getElementById("price-result") as HTMLElement;
     priceResult.textContent = result.price.toString();
@@ -86,14 +89,19 @@ const handleSubmit = async (event: SubmitEvent): Promise<void> => {
 
     keysToDelete.forEach((key) => localStorage.removeItem(key));
 
+     const combinedData = {
+                ...data,
+                ...finalData
+            };
+
     // Сохраняем в localStorage как строку
-    localStorage.setItem("moskitos_temp_" + city, JSON.stringify(data));
+    localStorage.setItem("moskitos_temp_" + city, JSON.stringify(combinedData));
 
     if (typeof city === "string") {
       localStorage.setItem("city", city);
     }
 
-    console.log("Сохранено в LocalStorage:", data);
+   // console.log("Сохранено в LocalStorage:", combinedData);
   } catch (error) {
     if (error instanceof Error) {
       console.error("❌ Виникла проблема:", error.message);
@@ -126,7 +134,7 @@ function addBasket(): void {
       // Сохраняем обратно
       localStorage.setItem("moskitos_setki_kyiv", JSON.stringify(existing));
 
-      console.log("Обновлённый массив объектов:", existing);
+     // console.log("Обновлённый массив объектов:", existing);
       renderList();
 
       localStorage.setItem("windows_lastAdded", Date.now().toString());
@@ -186,9 +194,9 @@ interface WindowData {
   city: string;
   width: string;
   height: string;
-  antikoshka: string;
-  type: string;
-  color: string;
+  user_antikoshka: string;
+  user_type: string;
+  user_color: string;
   price: string;
 }
 
@@ -211,7 +219,7 @@ function renderList(): void {
     const li = document.createElement("li");
     li.className = "setka-in-basket-block";
 
-    li.textContent = `${index + 1}. ${item.antikoshka} на ${item.type}: ${item.width} x ${item.height} - ${item.color} = ${item.price} грн.`;
+    li.textContent = `${index + 1}. ${item.user_antikoshka} на ${item.user_type}: ${item.width} x ${item.height} - ${item.user_color} = ${item.price} грн.`;
 
     // Создаём кнопку удаления
     const deleteBtn = document.createElement("button");
@@ -239,12 +247,12 @@ function renderList(): void {
     li.appendChild(deleteBtn);
     listEl.appendChild(li);
   });
-  // Получить
-  const lastAddedStr = localStorage.getItem("windows_lastAdded");
-  if (lastAddedStr) {
-    const lastAdded = new Date(parseInt(lastAddedStr));
-    console.log("Последнее добавление:", lastAdded.toLocaleString());
-  }
+  // // Получить
+  // const lastAddedStr = localStorage.getItem("windows_lastAdded");
+  // if (lastAddedStr) {
+  //   const lastAdded = new Date(parseInt(lastAddedStr));
+  //  // console.log("Последнее добавление:", lastAdded.toLocaleString());
+  // }
 
   updateSummary();
 }
@@ -292,6 +300,7 @@ interface OrderData {
 // Получаем форму
 const zakazForm = document.getElementById("zakaz") as HTMLFormElement;
 const orderResult = document.getElementById("orderResult");
+const orderNum = document.getElementById("orderNumber") as HTMLFormElement;
 
 zakazForm.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -333,8 +342,9 @@ zakazForm.addEventListener("submit", async (e) => {
   };
 
   try {
-    const response = await fetch("https://dim.komax.com.ua/api/zakaz/moskitos", {
+     const response = await fetch("https://dim.komax.com.ua/api/zakaz/moskitos", {
       // const response = await fetch("http://ava.test/api/zakaz/moskitos", {
+     // const response = await fetch("http://ava.test/api/testorder", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -352,7 +362,7 @@ zakazForm.addEventListener("submit", async (e) => {
 
     if (orderResult) {
       // Показываем номер заказа
-      orderResult.textContent = `Ваш номер заказа: ${orderNumber}`;
+      orderNum.textContent = orderNumber;
 
       // Очистка формы и корзины
       zakazForm.reset();
@@ -397,7 +407,15 @@ zakazForm.addEventListener("submit", async (e) => {
 
 // Инициализация формы
 document.addEventListener("DOMContentLoaded", () => {
-  initCalcForm("uk");
+  const form = document.getElementById('calc-form') as HTMLFormElement;
+
+    if (form) {
+        // 1. Динамически собираем объект translations из текущей формы
+        const dynamicTranslations = generateTranslationsFromForm(form);
+        
+        // 2. Инициализируем логику формы, передав собранные переводы
+        initCalcForm(dynamicTranslations);
+    }
   initDeliveryAddress();
 });
 

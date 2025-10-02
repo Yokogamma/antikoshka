@@ -1,3 +1,39 @@
+// Структура перевода для одной опции
+export interface TranslationItem {
+  data: string;  // Соответствует data-user-text
+  label: string; // Соответствует видимому тексту опции
+}
+
+// Структура объекта Translations (без ключа языка)
+export interface Translations {
+  type: Record<string, TranslationItem>;
+  antikoshka: Record<string, TranslationItem>;
+  open: Record<string, TranslationItem>;
+  [key: string]: Record<string, TranslationItem>;
+}
+
+// Структура состояния для одного поля (из windowStates)
+export interface FieldState {
+  status: number;
+  selected: number;
+  options: string[]; // Массив ключей опций (например, 'plastic', 'standart')
+}
+
+// Структура состояния для всех полей при определенном выборе
+export interface WindowState {
+  type: FieldState;
+  antikoshka: FieldState;
+  open: FieldState;
+  [key: string]: FieldState;
+}
+
+// Структура всей базы данных состояний (WindowStates)
+export interface WindowStates {
+  type: Record<string, WindowState>;
+  antikoshka: Record<string, WindowState>;
+  open: Record<string, WindowState>;
+  [key: string]: Record<string, WindowState>;
+}
 export const translations = {
   ru: {
     type: {
