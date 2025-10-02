@@ -311,12 +311,18 @@ header {
 }
 
 #moskitos_img {
-  img {
-    width: 100%;
-    @media (min-width: 720px) {
-      width: 270px;
-    }
+  width: 100%;
+  aspect-ratio: 270 / 417;
+  @media (min-width: 720px) {
+    width: 270px;
+    flex-shrink: 0;
   }
+}
+
+#moskitos_img img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 #calc {
@@ -330,7 +336,7 @@ header {
   }
 }
 
-.calc-form{
+.calc-form {
   display: flex;
   flex-direction: column;
   gap: 16px;

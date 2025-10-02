@@ -149,10 +149,10 @@ export function initCalcForm(translations: Translations) {
 
   // --- ИНИЦИАЛИЗАЦИЯ ---
   
-  const initialKey = Object.keys(windowStates.type)[0] as keyof typeof windowStates.type;
-  if (initialKey) {
-    updateFields(windowStates.type[initialKey]);
-  }
+  // const initialKey = Object.keys(windowStates.type)[0] as keyof typeof windowStates.type;
+  // if (initialKey) {
+  //   updateFields(windowStates.type[initialKey]);
+  // }
 }
 
 // deliveryAddress.ts

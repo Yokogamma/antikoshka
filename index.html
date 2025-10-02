@@ -85,9 +85,16 @@
             <div id="moskitos_img">
               <picture>
                 <!-- для экранов шириной до 720px -->
-                <source srcset="/public/img/photos/antikoshka_moskitos.jpg" media="(max-width: 720px)" />
+                <source srcset="/public/img/photos/antikoshka_moskitos-top.jpeg" media="(max-width: 720px)" />
                 <!-- для экранов больше -->
-                <img src="https://moskitos.com.ua/img/moskitos_moskitnaya_setka.jpg" alt="Антикошка Москитос" />
+                <img
+                  src="https://moskitos.com.ua/img/moskitos_moskitnaya_setka.jpg"
+                  alt="Антикошка Москитос"
+                  loading="eager"
+                  fetchpriority="high"
+                  decoding="async"
+                  width="270" height="417"
+                />
               </picture>
             </div>
 
@@ -275,7 +282,10 @@
           <!-- endregion basket block -->
 
           <div class="show-current">
-            <h3 id="orderResult">Ваш номер заказа: <span id="orderNumber"></span></h3>
+            <h3 id="orderResult">
+              Ваш номер заказа:
+              <span id="orderNumber"></span>
+            </h3>
             <p>Выберите наиболее удобную для Вас точку самовывоза в Киеве.</p>
             <a id="orderLink" class="btn-large-success" href="/kontakty?current=60252&amp;show=on">выбрать точку самовывоза</a>
           </div>
