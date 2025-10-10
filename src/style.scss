@@ -4,6 +4,7 @@
 @use "saas/components/old-styles";
 @use "saas/components/calc/calc-results";
 @use "saas/components/calc/basket";
+@use "saas/components/language-panel";
 
 html,
 body {
@@ -231,45 +232,7 @@ header {
 }
 /* #endregion */
 
-/* #region language panel */
 
-.language__panel {
-  display: flex;
-  justify-content: flex-end;
-  padding: 0 5px;
-  margin-bottom: 20px;
-}
-
-.language__panel a {
-  text-decoration: none;
-}
-
-.language__panel_contacts {
-  color: #faa732;
-  font-weight: bold;
-}
-
-.language__panel_box {
-  display: flex;
-  justify-content: right;
-  gap: 10px;
-}
-.language__panel_phone {
-  font-weight: bold;
-  color: #faa732;
-}
-
-.language__panel_ru {
-  color: grey;
-}
-
-.language__panel_ua {
-  color: #faa732;
-  font-weight: bold;
-  pointer-events: none;
-}
-
-/* #endregion */
 
 /* #region calc */
 
