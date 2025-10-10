@@ -75,6 +75,15 @@
                 <img src="img/icons/telegram_logo.svg" width="20" height="20" />
               </a>
             </p>
+            <p class="language__panel_box">
+              <a href="https://moskitos.com.ua/antikoshka" title="">
+                <span style="color: grey; font-weight: bold; margin-left: 10px">RU</span>
+              </a>
+              <span style="color: grey; font-weight: bold">|</span>
+              <a href="https://moskitos.com.ua/ua/antykishka">
+                <span style="color: #fa7014; font-weight: bold">UA</span>
+              </a>
+            </p>
           </div>
 
           <!-- заглавие сайта-->
@@ -93,7 +102,8 @@
                   loading="eager"
                   fetchpriority="high"
                   decoding="async"
-                  width="270" height="417"
+                  width="270"
+                  height="417"
                 />
               </picture>
             </div>
@@ -511,30 +521,33 @@
 
             <!--Застекление в цветном профиле-->
             <h3 class="article_head">Видео как замерять сетки - 2 минуты и Вы - профи</h3>
-
-            <iframe
-              class="komax-iframe"
-              src="https://player.vimeo.com/video/136675012?color=ff9933"
-              frameborder="0"
-              webkitallowfullscreen=""
-              mozallowfullscreen=""
-              allowfullscreen=""
-              loading="lazy"
-            ></iframe>
+            <div style="padding: 56.25% 0 0 0; position: relative" class="vimeo-wrapper">
+              <iframe
+                src="https://player.vimeo.com/video/830800429?badge=0&autopause=0&player_id=0&app_id=58479"
+                frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                loading="lazy"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"
+                title="Замір проєму вікна для москітної сітки"
+              ></iframe>
+            </div>
           </div>
 
           <div class="margin-outside">
             <h3 class="article_head">Видео как самому установить противомоскитные сетки (30 сек)</h3>
 
-            <iframe
-              class="komax-iframe2"
-              src="https://player.vimeo.com/video/136674940?color=ff9933"
-              frameborder="0"
-              webkitallowfullscreen=""
-              mozallowfullscreen=""
-              allowfullscreen=""
-              loading="lazy"
-            ></iframe>
+            <div style="padding: 56.25% 0 0 0; position: relative">
+              <iframe
+                src="https://player.vimeo.com/video/831121069?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"
+                loading="lazy"
+                title="Як самостійно встановити москітну сітку на вікно"
+              ></iframe>
+            </div>
           </div>
 
           <div class="komax-question-block margin-outside">
@@ -837,5 +850,12 @@
     </div>
 
     <script type="module" src="./src/main.ts"></script>
+    <script>
+      // Загружаем Vimeo player.js асинхронно
+      const script = document.createElement("script");
+      script.src = "https://player.vimeo.com/api/player.js";
+      script.async = true;
+      document.body.appendChild(script);
+    </script>
   </body>
 </html>
