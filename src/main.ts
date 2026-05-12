@@ -2,6 +2,72 @@ import "./style.scss";
 import {generateTranslationsFromForm, initCalcForm, initDeliveryAddress} from "./ts/form";
 import {collectFormTextData} from "./ts/calc_form/user_data";
 
+// === Phase 0 telemetry helpers ==============================================
+//
+// Antikoshka still POSTs cross-origin to dim.komax for calc/zakaz; mgit has no
+// visibility into those flows. These helpers ship every failure to mgit via
+// navigator.sendBeacon → POST /api/anti-error, where the controller appends
+// the full payload (incl. orderData for recovery) to
+// storage/logs/antikoshka-errors.ndjson and alerts Mattermost with a sanitised
+// subset. The endpoint is CSRF-exempt and same-origin (relative URL).
+//
+// pendingOrder banner / auto-retry is intentionally NOT included in Phase 0 —
+// idempotency on the ava side is blocked on R-BE0, so a resend could create
+// duplicates. Manual retry returns in R-FE3.
+// ============================================================================
+
+type ReportCtx = Record<string, unknown>;
+
+function reportAntiError(stage: string, err: unknown, ctx: ReportCtx): void {
+  try {
+    const e = err instanceof Error ? err : null;
+    const payload = {
+      stage,
+      err: e
+        ? {name: e.name, message: e.message, stack: (e.stack || "").slice(0, 500)}
+        : {name: "UnknownError", message: String(err), stack: ""},
+      ctx,
+      page: location.pathname,
+      ua: navigator.userAgent,
+    };
+    navigator.sendBeacon(
+      "/api/anti-error",
+      new Blob([JSON.stringify(payload)], {type: "application/json"})
+    );
+  } catch {
+    // Beacon must never throw out — losing telemetry is fine, breaking the page is not.
+  }
+}
+
+// Resolve mgit's order_number BEFORE the zakaz POST so a future R-BE0
+// idempotency lookup on ava has a stable key. Relative URL so staging/local
+// hits its own /ajax, not prod. On any failure we keep going with `current=null`
+// rather than blocking the order — the report tells the manager that recovery
+// will be harder for that one entry.
+async function fetchCurrent(): Promise<number | null> {
+  const ctrl = new AbortController();
+  const timer = window.setTimeout(() => ctrl.abort(), 5000);
+  try {
+    const r = await fetch("/ajax", {signal: ctrl.signal});
+    const text = await r.text();
+    const n = parseInt(text, 10);
+    if (Number.isNaN(n)) {
+      reportAntiError("current_fetch_failed", new Error("non-numeric /ajax response"), {
+        url: "/ajax",
+        status: r.status,
+      });
+      return null;
+    }
+    return n;
+  } catch (err) {
+    reportAntiError("current_fetch_failed", err, {url: "/ajax"});
+    return null;
+  } finally {
+    window.clearTimeout(timer);
+  }
+}
+// ============================================================================
+
 const toggleButton = document.querySelector("#brandmenu") as HTMLFormElement;
 const dropdownMenu = document.querySelector(".brandmenu-dropdown") as HTMLFormElement;
 
@@ -40,6 +106,9 @@ const handleSubmit = async (event: SubmitEvent): Promise<void> => {
 
    const url = "https://dim.komax.com.ua/api/calc/moskitos"; // Замініть на ваш URL
  //const url = "http://ava.test/api/calc/moskitos"; // Замініть на ваш URL
+  let statusCode: number | null = null;
+  const calcAbort = new AbortController();
+  const calcTimer = window.setTimeout(() => calcAbort.abort(), 10000);
   try {
     // 3. Виконуємо fetch-запит
     const response = await fetch(url, {
@@ -48,7 +117,9 @@ const handleSubmit = async (event: SubmitEvent): Promise<void> => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
+      signal: calcAbort.signal,
     });
+    statusCode = response.status;
 
     if (!response.ok) {
       // пробуем вытащить текст/JSON ошибки от сервера
@@ -108,6 +179,9 @@ const handleSubmit = async (event: SubmitEvent): Promise<void> => {
     } else {
       console.error("Невідома помилка:", error);
     }
+    reportAntiError("calc", error, {url, status: statusCode});
+  } finally {
+    window.clearTimeout(calcTimer);
   }
 };
 
@@ -295,6 +369,7 @@ interface OrderData {
   delivery: string;
   city: string;
   address: string;
+  current: number | null;
 }
 
 // Получаем форму
@@ -327,6 +402,11 @@ zakazForm.addEventListener("submit", async (e) => {
   const quantity = setki.length;
   const total_cost = setki.reduce((sum, w) => sum + Number(w.width || 0), 0);
 
+  // Reserve order_number on mgit BEFORE the cross-origin POST so ava can
+  // de-dupe by `current` once R-BE0 idempotency lands. Null is acceptable
+  // legacy compat; the failure is already reported inside fetchCurrent().
+  const current = await fetchCurrent();
+
   // Формируем объект для отправки
   const orderData: OrderData = {
     name,
@@ -339,10 +419,15 @@ zakazForm.addEventListener("submit", async (e) => {
     delivery,
     city,
     address,
+    current,
   };
 
+  const zakazUrl = "https://dim.komax.com.ua/api/zakaz/moskitos";
+  let zakazStatus: number | null = null;
+  const zakazAbort = new AbortController();
+  const zakazTimer = window.setTimeout(() => zakazAbort.abort(), 10000);
   try {
-     const response = await fetch("https://dim.komax.com.ua/api/zakaz/moskitos", {
+     const response = await fetch(zakazUrl, {
       // const response = await fetch("http://ava.test/api/zakaz/moskitos", {
      // const response = await fetch("http://ava.test/api/testorder", {
       method: "POST",
@@ -350,7 +435,9 @@ zakazForm.addEventListener("submit", async (e) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(orderData),
+      signal: zakazAbort.signal,
     });
+    zakazStatus = response.status;
 
     if (!response.ok) {
       throw new Error("Ошибка отправки заказа");
@@ -401,6 +488,11 @@ zakazForm.addEventListener("submit", async (e) => {
   } catch (error) {
     console.error(error);
     if (orderResult) orderResult.textContent = "Произошла ошибка при отправке заказа.";
+    // Full orderData (with PII) goes to the mgit ndjson; Mattermost gets only
+    // the sanitised header. Lets the manager call the customer back.
+    reportAntiError("zakaz", error, {url: zakazUrl, status: zakazStatus, orderData});
+  } finally {
+    window.clearTimeout(zakazTimer);
   }
 });
 
