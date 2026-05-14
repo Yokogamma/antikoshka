@@ -48,7 +48,7 @@ async function fetchCurrent(): Promise<number | null> {
   const ctrl = new AbortController();
   const timer = window.setTimeout(() => ctrl.abort(), 5000);
   try {
-    const r = await fetch("/ajax", {signal: ctrl.signal});
+    const r = await fetch("/ajax", {cache: "no-store", signal: ctrl.signal});
     const text = await r.text();
     const n = parseInt(text, 10);
     if (Number.isNaN(n)) {
@@ -65,6 +65,48 @@ async function fetchCurrent(): Promise<number | null> {
   } finally {
     window.clearTimeout(timer);
   }
+}
+// ============================================================================
+
+// === Phase 0 hotfix: double-click protection ================================
+// fetchCurrent() reserves a mgit-owned order_number per submit. A double-click
+// produced two POSTs to ava with two different `current` values → R-BE0
+// idempotency (dedup-by-`current`) cannot dedupe distinct keys, and today
+// (no idempotency yet) this is a real duplicate at the ava boundary.
+// Lock + per-form-shape cache: same intent → same `current` → ava `unchanged`.
+// Cache scope: module = tab + page-load. Full pending recovery lands in R-FE3.
+// ============================================================================
+
+let zakazInFlight = false;
+let cachedCurrent: number | null = null;
+let cachedCurrentKey: string | null = null;
+
+function computeFormKey(payload: {
+  name: string;
+  phone: string;
+  email: string;
+  address: string;
+  payment: string;
+  delivery: string;
+  setki: WindowData[];
+}): string {
+  return JSON.stringify({
+    name: payload.name,
+    phone: payload.phone,
+    email: payload.email,
+    address: payload.address,
+    payment: payload.payment,
+    delivery: payload.delivery,
+    setki: payload.setki,
+  });
+}
+
+// UA route is /ua/antykishka (see hreflang alternate in antikoshka2.blade.php).
+// index.html ships lang="ru-UA" for both routes so pathname is authoritative.
+function processingLabel(): string {
+  return location.pathname.includes("antykishka")
+    ? "Обробляється..."
+    : "Обрабатывается...";
 }
 // ============================================================================
 
@@ -380,119 +422,141 @@ const orderNum = document.getElementById("orderNumber") as HTMLFormElement;
 zakazForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const formData = new FormData(zakazForm);
-  const name = formData.get("name")?.toString() || "";
-  const email = formData.get("email")?.toString() || "";
-  const phone = formData.get("phone")?.toString() || "";
-  const address = formData.get("address")?.toString() || "";
+  // Re-entrance guard — second click while we're in-flight is dropped.
+  if (zakazInFlight) return;
+  zakazInFlight = true;
 
-  // Получаем выбранную радио-кнопку
-  const paymentInput = zakazForm.querySelector<HTMLInputElement>('input[name="choice2"]:checked');
-  const payment = paymentInput?.value || "";
+  // Visual feedback: disabled + locale-aware label. Original textContent is
+  // captured live so we don't hardcode RU/UA strings.
+  const submitBtn = zakazForm.querySelector<HTMLButtonElement>('button[type=submit]');
+  const originalBtnText = submitBtn?.textContent ?? "";
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.textContent = processingLabel();
+  }
 
-  const deliveryInput = zakazForm.querySelector<HTMLInputElement>('input[name="choice"]:checked');
-  const delivery = deliveryInput?.value || "";
-
-  // Достаём массив окон из localStorage
-  const setki: WindowData[] = JSON.parse(localStorage.getItem("moskitos_setki_kyiv") || "[]");
-
-  const city = setki[0]?.city;
-
-  // Считаем sumWidth и count
-  const quantity = setki.length;
-  const total_cost = setki.reduce((sum, w) => sum + Number(w.width || 0), 0);
-
-  // Reserve order_number on mgit BEFORE the cross-origin POST so ava can
-  // de-dupe by `current` once R-BE0 idempotency lands. Null is acceptable
-  // legacy compat; the failure is already reported inside fetchCurrent().
-  const current = await fetchCurrent();
-
-  // Формируем объект для отправки
-  const orderData: OrderData = {
-    name,
-    email,
-    phone,
-    setki,
-    quantity,
-    total_cost,
-    payment,
-    delivery,
-    city,
-    address,
-    current,
-  };
-
-  const zakazUrl = "https://dim.komax.com.ua/api/zakaz/moskitos";
-  let zakazStatus: number | null = null;
-  const zakazAbort = new AbortController();
-  const zakazTimer = window.setTimeout(() => zakazAbort.abort(), 10000);
+  // Outer try/finally guarantees the lock + button release even if payload
+  // construction throws (FormData reads, localStorage JSON.parse, etc.).
   try {
-     const response = await fetch(zakazUrl, {
-      // const response = await fetch("http://ava.test/api/zakaz/moskitos", {
-     // const response = await fetch("http://ava.test/api/testorder", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(orderData),
-      signal: zakazAbort.signal,
-    });
-    zakazStatus = response.status;
+    const formData = new FormData(zakazForm);
+    const name = formData.get("name")?.toString() || "";
+    const email = formData.get("email")?.toString() || "";
+    const phone = formData.get("phone")?.toString() || "";
+    const address = formData.get("address")?.toString() || "";
 
-    if (!response.ok) {
-      throw new Error("Ошибка отправки заказа");
+    const paymentInput = zakazForm.querySelector<HTMLInputElement>('input[name="choice2"]:checked');
+    const payment = paymentInput?.value || "";
+
+    const deliveryInput = zakazForm.querySelector<HTMLInputElement>('input[name="choice"]:checked');
+    const delivery = deliveryInput?.value || "";
+
+    const setki: WindowData[] = JSON.parse(localStorage.getItem("moskitos_setki_kyiv") || "[]");
+    const city = setki[0]?.city;
+    const quantity = setki.length;
+    const total_cost = setki.reduce((sum, w) => sum + Number(w.width || 0), 0);
+
+    // Reuse the cached `current` iff the form shape hasn't changed. Retry of
+    // the *same* intent must go to ava with the *same* key (post-R-BE0:
+    // ava returns `unchanged`). Form-edit invalidates the cache → fresh
+    // fetchCurrent() because that's a different intent.
+    const formKey = computeFormKey({name, phone, email, address, payment, delivery, setki});
+    if (cachedCurrent === null || cachedCurrentKey !== formKey) {
+      cachedCurrent = await fetchCurrent();
+      cachedCurrentKey = formKey;
     }
 
-    // Предположим, сервер возвращает { orderNumber: "12345" }
-    const result = await response.json();
-    const orderNumber = result.orderNumber;
+    // orderData/zakazUrl declared BEFORE the inner try so they're in scope
+    // for the catch block (reportAntiError needs them for recovery payload).
+    const orderData: OrderData = {
+      name,
+      email,
+      phone,
+      setki,
+      quantity,
+      total_cost,
+      payment,
+      delivery,
+      city,
+      address,
+      current: cachedCurrent,
+    };
 
-    if (orderResult) {
-      // Показываем номер заказа
-      orderNum.textContent = orderNumber;
-
-      // Очистка формы и корзины
-      zakazForm.reset();
-      localStorage.removeItem("moskitos_setki_kyiv");
-      initDeliveryAddress();
-
-      collapseAllBlocks();
-
-      // Ждём, пока браузер пересчитает layout
-      requestAnimationFrame(() => {
-        // Можно добавить небольшую задержку, чтобы блоки успели схлопнуться визуально
-        setTimeout(() => {
-          if (orderResult) {
-            
-            const orderLink = document.getElementById("orderLink") as HTMLAnchorElement | null;
-
-            if (orderLink) {
-              // Разбираем текущий href
-              const url = new URL(orderLink.href, window.location.origin);
-
-              // Обновляем параметр current
-              url.searchParams.set("current", orderNumber.toString());
-
-              // Присваиваем обратно
-              orderLink.href = url.toString();
-            }
-
-            showCurrentBlock();
-            orderResult.scrollIntoView({ behavior: "smooth", block: "start" });
-            orderResult.classList.add("highlight");
-            setTimeout(() => orderResult.classList.remove("highlight"), 2000);
-          }
-        }, 500); // 50ms — достаточно для плавного визуального эффекта
+    const zakazUrl = "https://dim.komax.com.ua/api/zakaz/moskitos";
+    let zakazStatus: number | null = null;
+    const zakazAbort = new AbortController();
+    const zakazTimer = window.setTimeout(() => zakazAbort.abort(), 10000);
+    try {
+      const response = await fetch(zakazUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+        signal: zakazAbort.signal,
       });
+      zakazStatus = response.status;
+
+      if (!response.ok) {
+        throw new Error("Ошибка отправки заказа");
+      }
+
+      const result = await response.json();
+
+      // Clear cache immediately after a successful response — BEFORE any DOM
+      // work. If we put this inside `if (orderResult)` and orderResult is
+      // null, or if the DOM block throws, the stale `current` would bleed
+      // into the next customer's order in the same session.
+      cachedCurrent = null;
+      cachedCurrentKey = null;
+
+      const orderNumber = result.orderNumber;
+
+      if (orderResult) {
+        orderNum.textContent = orderNumber;
+
+        zakazForm.reset();
+        localStorage.removeItem("moskitos_setki_kyiv");
+        initDeliveryAddress();
+
+        collapseAllBlocks();
+
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            if (orderResult) {
+              const orderLink = document.getElementById("orderLink") as HTMLAnchorElement | null;
+
+              if (orderLink) {
+                const url = new URL(orderLink.href, window.location.origin);
+                url.searchParams.set("current", orderNumber.toString());
+                orderLink.href = url.toString();
+              }
+
+              showCurrentBlock();
+              orderResult.scrollIntoView({ behavior: "smooth", block: "start" });
+              orderResult.classList.add("highlight");
+              setTimeout(() => orderResult.classList.remove("highlight"), 2000);
+            }
+          }, 500);
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      if (orderResult) orderResult.textContent = "Произошла ошибка при отправке заказа.";
+      // cachedCurrent is intentionally NOT cleared — retry of same intent
+      // must reuse the same key. Full orderData (with PII) ships to mgit
+      // ndjson for recovery; Mattermost gets only the sanitised header.
+      reportAntiError("zakaz", error, {url: zakazUrl, status: zakazStatus, orderData});
+    } finally {
+      window.clearTimeout(zakazTimer);
     }
-  } catch (error) {
-    console.error(error);
-    if (orderResult) orderResult.textContent = "Произошла ошибка при отправке заказа.";
-    // Full orderData (with PII) goes to the mgit ndjson; Mattermost gets only
-    // the sanitised header. Lets the manager call the customer back.
-    reportAntiError("zakaz", error, {url: zakazUrl, status: zakazStatus, orderData});
   } finally {
-    window.clearTimeout(zakazTimer);
+    // Outer finally — releases lock + button regardless of where execution
+    // exited (success, ava error, payload-build throw).
+    zakazInFlight = false;
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalBtnText;
+    }
   }
 });
 
