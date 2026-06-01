@@ -72,18 +72,35 @@ async function fetchCurrent(): Promise<number | null> {
 // Some visitors block site storage (cookies/site-data disabled, strict privacy
 // mode, managed browsers). In that environment even reading
 // `window.localStorage` throws SecurityError, which would otherwise crash the
-// calc/zakaz handlers. These wrappers swallow the error so the calculator
-// still shows the price; persistence (basket/temp/city) silently degrades.
+// calc/zakaz handlers.
+//
+// When storage is unavailable we fall back to a per-tab in-memory Map so that
+// calc → addBasket → renderList → zakaz still works within one page session.
+// Persistence across reloads degrades silently (the Map dies with the tab).
 // ============================================================================
 
+const memStore = new Map<string, string>();
+
 function lsGet(key: string): string | null {
-  try { return window.localStorage.getItem(key); } catch { return null; }
+  try {
+    return window.localStorage.getItem(key);
+  } catch {
+    return memStore.has(key) ? memStore.get(key)! : null;
+  }
 }
 function lsSet(key: string, value: string): void {
-  try { window.localStorage.setItem(key, value); } catch { /* storage blocked */ }
+  try {
+    window.localStorage.setItem(key, value);
+  } catch {
+    memStore.set(key, value);
+  }
 }
 function lsRemove(key: string): void {
-  try { window.localStorage.removeItem(key); } catch { /* storage blocked */ }
+  try {
+    window.localStorage.removeItem(key);
+  } catch {
+    memStore.delete(key);
+  }
 }
 
 // === Phase 0 hotfix: double-click protection ================================
@@ -364,11 +381,11 @@ function renderList(): void {
     deleteBtn.className = "setka-item";
 
     const svgStr = `
-  <svg xmlns="http://www.w3.org/2000/svg" 
-       fill="none" 
-       viewBox="0 0 24 24" 
-       stroke-width="1.5" 
-       stroke="currentColor" 
+  <svg xmlns="http://www.w3.org/2000/svg"
+       fill="none"
+       viewBox="0 0 24 24"
+       stroke-width="1.5"
+       stroke="currentColor"
        class="size-6"
        aria-hidden="true">
     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 L18 6 M6 6 L18 18"></path>
