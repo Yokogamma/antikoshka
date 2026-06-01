@@ -68,6 +68,24 @@ async function fetchCurrent(): Promise<number | null> {
 }
 // ============================================================================
 
+// === Safe localStorage wrappers =============================================
+// Some visitors block site storage (cookies/site-data disabled, strict privacy
+// mode, managed browsers). In that environment even reading
+// `window.localStorage` throws SecurityError, which would otherwise crash the
+// calc/zakaz handlers. These wrappers swallow the error so the calculator
+// still shows the price; persistence (basket/temp/city) silently degrades.
+// ============================================================================
+
+function lsGet(key: string): string | null {
+  try { return window.localStorage.getItem(key); } catch { return null; }
+}
+function lsSet(key: string, value: string): void {
+  try { window.localStorage.setItem(key, value); } catch { /* storage blocked */ }
+}
+function lsRemove(key: string): void {
+  try { window.localStorage.removeItem(key); } catch { /* storage blocked */ }
+}
+
 // === Phase 0 hotfix: double-click protection ================================
 // fetchCurrent() reserves a mgit-owned order_number per submit. A double-click
 // produced two POSTs to ava with two different `current` values → R-BE0
@@ -164,16 +182,20 @@ const handleSubmit = async (event: SubmitEvent): Promise<void> => {
     statusCode = response.status;
 
     if (!response.ok) {
-      // пробуем вытащить текст/JSON ошибки от сервера
+      // Read body ONCE: a Response body is a stream that can only be consumed
+      // once. komax on 5xx often returns non-JSON (HTML error page / empty),
+      // so we read it as text first and try JSON.parse on the same string.
       let errorMessage = `Помилка: ${response.status}`;
+      const bodyText = await response.text();
       try {
-        const errorData = await response.json();
-        if (errorData.error) {
+        const errorData = JSON.parse(bodyText);
+        if (errorData && errorData.error) {
           errorMessage = errorData.error;
+        } else if (bodyText) {
+          errorMessage = bodyText;
         }
       } catch {
-        // если сервер вернул не JSON
-        errorMessage = await response.text();
+        if (bodyText) errorMessage = bodyText;
       }
 
       throw new Error(errorMessage);
@@ -200,7 +222,7 @@ const handleSubmit = async (event: SubmitEvent): Promise<void> => {
 
     const keysToDelete = ["formData", "moskitos_" + city, "moskitos_temp_" + city];
 
-    keysToDelete.forEach((key) => localStorage.removeItem(key));
+    keysToDelete.forEach((key) => lsRemove(key));
 
      const combinedData = {
                 ...data,
@@ -208,10 +230,10 @@ const handleSubmit = async (event: SubmitEvent): Promise<void> => {
             };
 
     // Сохраняем в localStorage как строку
-    localStorage.setItem("moskitos_temp_" + city, JSON.stringify(combinedData));
+    lsSet("moskitos_temp_" + city, JSON.stringify(combinedData));
 
     if (typeof city === "string") {
-      localStorage.setItem("city", city);
+      lsSet("city", city);
     }
 
    // console.log("Сохранено в LocalStorage:", combinedData);
@@ -231,29 +253,29 @@ const handleSubmit = async (event: SubmitEvent): Promise<void> => {
 form.addEventListener("submit", handleSubmit);
 
 function addBasket(): void {
-  const city: string | null = localStorage.getItem("city");
+  const city: string | null = lsGet("city");
 
   if (city) {
     // Достаём строку из localStorage
-    const formDataStr: string | null = localStorage.getItem("moskitos_temp_" + city);
+    const formDataStr: string | null = lsGet("moskitos_temp_" + city);
 
     if (formDataStr) {
       // Преобразуем JSON-строку обратно в объект
       const obj: Record<string, string> = JSON.parse(formDataStr);
 
       // Достаём существующий массив объектов или создаём новый
-      const existing: Record<string, string>[] = JSON.parse(localStorage.getItem("moskitos_setki_kyiv") || "[]");
+      const existing: Record<string, string>[] = JSON.parse(lsGet("moskitos_setki_kyiv") || "[]");
 
       // Добавляем новый объект
       existing.push(obj);
 
       // Сохраняем обратно
-      localStorage.setItem("moskitos_setki_kyiv", JSON.stringify(existing));
+      lsSet("moskitos_setki_kyiv", JSON.stringify(existing));
 
      // console.log("Обновлённый массив объектов:", existing);
       renderList();
 
-      localStorage.setItem("windows_lastAdded", Date.now().toString());
+      lsSet("windows_lastAdded", Date.now().toString());
 
       // const calcResultsBlock = document.getElementById("basket-block") as HTMLDivElement;
       // calcResultsBlock.classList.add("active");
@@ -320,7 +342,7 @@ function renderList(): void {
   const listEl = document.getElementById("list");
   if (!listEl) return;
 
-  const existing: WindowData[] = JSON.parse(localStorage.getItem("moskitos_setki_kyiv") || "[]");
+  const existing: WindowData[] = JSON.parse(lsGet("moskitos_setki_kyiv") || "[]");
 
   // Если массив пустой, вызываем foo() и выходим
   if (existing.length === 0) {
@@ -375,15 +397,15 @@ function renderList(): void {
 
 // Удаление объекта по индексу
 function removeWindow(index: number): void {
-  const existing: WindowData[] = JSON.parse(localStorage.getItem("moskitos_setki_kyiv") || "[]");
+  const existing: WindowData[] = JSON.parse(lsGet("moskitos_setki_kyiv") || "[]");
   existing.splice(index, 1); // удаляем элемент
-  localStorage.setItem("moskitos_setki_kyiv", JSON.stringify(existing));
+  lsSet("moskitos_setki_kyiv", JSON.stringify(existing));
   renderList();
 }
 
 // Функция для обновления сводки
 function updateSummary(): void {
-  const existing: WindowData[] = JSON.parse(localStorage.getItem("moskitos_setki_kyiv") || "[]");
+  const existing: WindowData[] = JSON.parse(lsGet("moskitos_setki_kyiv") || "[]");
 
   const countEl = document.getElementById("count");
   const sumWidthEl = document.getElementById("sumWidth");
@@ -450,7 +472,7 @@ zakazForm.addEventListener("submit", async (e) => {
     const deliveryInput = zakazForm.querySelector<HTMLInputElement>('input[name="choice"]:checked');
     const delivery = deliveryInput?.value || "";
 
-    const setki: WindowData[] = JSON.parse(localStorage.getItem("moskitos_setki_kyiv") || "[]");
+    const setki: WindowData[] = JSON.parse(lsGet("moskitos_setki_kyiv") || "[]");
     const city = setki[0]?.city;
     const quantity = setki.length;
     const total_cost = setki.reduce((sum, w) => sum + Number(w.width || 0), 0);
@@ -515,7 +537,7 @@ zakazForm.addEventListener("submit", async (e) => {
         orderNum.textContent = orderNumber;
 
         zakazForm.reset();
-        localStorage.removeItem("moskitos_setki_kyiv");
+        lsRemove("moskitos_setki_kyiv");
         initDeliveryAddress();
 
         collapseAllBlocks();
