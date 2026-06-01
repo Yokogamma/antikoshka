@@ -79,26 +79,38 @@ async function fetchCurrent(): Promise<number | null> {
 // Persistence across reloads degrades silently (the Map dies with the tab).
 // ============================================================================
 
+// Forced fallback: once ANY storage call throws (SecurityError, quota,
+// transient policy change), we mark storage as dead and route ALL future
+// ops through the Map. Without this, a quota-exceeded setItem would write
+// to Map while subsequent getItem still succeeded against localStorage —
+// returning null and losing the value we just stored.
 const memStore = new Map<string, string>();
+let storageDead = false;
 
 function lsGet(key: string): string | null {
+  if (storageDead) return memStore.has(key) ? memStore.get(key)! : null;
   try {
     return window.localStorage.getItem(key);
   } catch {
+    storageDead = true;
     return memStore.has(key) ? memStore.get(key)! : null;
   }
 }
 function lsSet(key: string, value: string): void {
+  if (storageDead) { memStore.set(key, value); return; }
   try {
     window.localStorage.setItem(key, value);
   } catch {
+    storageDead = true;
     memStore.set(key, value);
   }
 }
 function lsRemove(key: string): void {
+  if (storageDead) { memStore.delete(key); return; }
   try {
     window.localStorage.removeItem(key);
   } catch {
+    storageDead = true;
     memStore.delete(key);
   }
 }
