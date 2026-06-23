@@ -209,6 +209,10 @@
 
           <div class="basket-block" id="fill-order">
             <form class="send-zakaz" id="zakaz">
+              <!-- honeypot: приманка для ботів (off-screen). Дублюється у mgit-blade. -->
+              <input type="text" name="url" id="hp-url" tabindex="-1" autocomplete="off"
+                     aria-hidden="true"
+                     style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
               <div class="client-info">
                 <div class="fieldset">
                   <label>Имя, Фамилия</label>
@@ -216,7 +220,7 @@
                 </div>
                 <div class="fieldset">
                   <label>Ваш телефон</label>
-                  <input type="tel" name="phone" />
+                  <input type="tel" name="phone" required />
                 </div>
                 <div class="fieldset">
                   <label>Ваш email</label>

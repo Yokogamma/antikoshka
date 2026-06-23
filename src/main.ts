@@ -462,6 +462,7 @@ interface OrderData {
   delivery: string;
   city: string;
   address: string;
+  url: string;
   current: number | null;
 }
 
@@ -494,6 +495,7 @@ zakazForm.addEventListener("submit", async (e) => {
     const email = formData.get("email")?.toString() || "";
     const phone = formData.get("phone")?.toString() || "";
     const address = formData.get("address")?.toString() || "";
+    const hp = formData.get("url")?.toString() || ""; // honeypot — людина лишає порожнім
 
     const paymentInput = zakazForm.querySelector<HTMLInputElement>('input[name="choice2"]:checked');
     const payment = paymentInput?.value || "";
@@ -510,6 +512,20 @@ zakazForm.addEventListener("submit", async (e) => {
     // the *same* intent must go to ava with the *same* key (post-R-BE0:
     // ava returns `unchanged`). Form-edit invalidates the cache → fresh
     // fetchCurrent() because that's a different intent.
+    // Гварди СТРОГО до computeFormKey()/fetchCurrent() — щоб не резервувати
+    // (і не палити) номер у mgit на порожній кошик / honeypot / порожній телефон.
+    if (setki.length === 0) {
+      if (orderResult) orderResult.textContent = "Додайте хоча б одну сітку в кошик.";
+      return;
+    }
+    if (hp !== "") {
+      return; // honeypot заповнено — бот, тихо виходимо
+    }
+    if (phone.trim().length < 5) {
+      if (orderResult) orderResult.textContent = "Вкажіть коректний номер телефону.";
+      return;
+    }
+
     const formKey = computeFormKey({name, phone, email, address, payment, delivery, setki});
     if (cachedCurrent === null || cachedCurrentKey !== formKey) {
       cachedCurrent = await fetchCurrent();
@@ -529,6 +545,7 @@ zakazForm.addEventListener("submit", async (e) => {
       delivery,
       city,
       address,
+      url: hp,
       current: cachedCurrent,
     };
 
